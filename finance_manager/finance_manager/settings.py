@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'debt',
     'goals',
     'savings',
+    'income',
+    'investment',
 ]
 
 MIDDLEWARE = [
@@ -122,7 +124,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 # Directory where static files will be collected
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')

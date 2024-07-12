@@ -1,119 +1,45 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Finance Manager{% endblock %}</title>
+    <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <style>
-        body {
-            background-color: #F0F3F8; /* Light gray-blue background */
-            color: #333333; /* Dark gray text */
-            font-family: Arial, sans-serif;
-        }
-
-        header, footer {
-            background-color: #1A1A1A; /* Dark gray-blue */
-            color: #FFFFFF; /* White text */
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        header h1 {
-            margin: 0;
-        }
-
-        nav ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            gap: 10px;
-        }
-
-        nav ul li {
-            display: inline;
-        }
-
-        .logout-button {
-            border: none;
-            background: none;
-            color: inherit;
-            font: inherit;
-            cursor: pointer;
-            padding: 0;
-        }
-
-        .financial-status {
-            margin-left: 20px; /* Adjust as needed */
-        }
-
-        .financial-status h2 {
-            margin: 0;
-        }
-
-        footer {
-            text-align: center;
-            background-color: #1A1A1A; /* Dark gray-blue */
-            color: #FFFFFF; /* White text */
-            padding: 10px 20px;
-        }
-
-        footer p {
-            margin: 0;
-        }
-    </style>
 </head>
 <body>
     <header>
-        <h1>Finance Manager</h1>
-        {% if user.is_authenticated %}
-            <div class="financial-status">
-                <h2>Welcome, {{ user.username }}</h2>
-            </div>
-        {% endif %}
-        <nav>
-            <ul>
-                {% if user.is_authenticated %}
-                    <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
-                    <li><a href="{% url 'savings_list' %}">Savings</a></li>
-                    <li><a href="{% url 'expense_list' %}">Expenses</a></li>
-                    <li><a href="{% url 'debt_list' %}">Debt</a></li>
-                    <li><a href="{% url 'goal_list' %}">Goals</a></li>
-                    <li>
-                        <form action="{% url 'logout' %}" method="post">
-                            {% csrf_token %}
-                            <button type="submit" class="logout-button">Logout</button>
-                        </form>
-                    </li>
-                {% else %}
-                    <li><a href="{% url 'login' %}">Login</a></li>
-                    <li><a href="{% url 'signup' %}">Sign Up</a></li>
-                {% endif %}
-            </ul>
-        </nav>
+        <div class="header-content">
+            <h1>Finance Manager</h1>
+            {% if user.is_authenticated %}
+                <div class="user-info">
+                    <span>Welcome, {{ user.username }}</span>
+                    <a class="logout" href="{% url 'logout' %}">Logout</a>
+                </div>
+            {% endif %}
+        </div>
     </header>
+
+    <nav>
+        <ul>
+            <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+            <li><a href="{% url 'income_list' %}">Income</a></li>
+            <li><a href="{% url 'investment_list' %}">Investments</a></li>
+            <li><a href="{% url 'expense_list' %}">Expenses</a></li>
+            <li><a href="{% url 'debt_list' %}">Debts</a></li>
+            <li><a href="{% url 'savings_list' %}">Savings</a></li>
+            <li><a href="{% url 'goals_list' %}">Goals</a></li>
+        </ul>
+    </nav>
+
     <main>
         {% block content %}
         {% endblock %}
     </main>
+
     <footer>
-        <p>&copy; 2024 Finance Manager</p>
+        &copy; {{ year }} Finance Manager. All rights reserved.
     </footer>
-
-    {% if messages %}
-    <div class="messages">
-        {% for message in messages %}
-        <div class="message">{{ message }}</div>
-        {% endfor %}
-    </div>
-    {% endif %}
-
-    {% block scripts %}
-    <!-- Add custom scripts here -->
-    {% endblock %}
 </body>
 </html>

@@ -3,9 +3,9 @@ from .models import Goals
 from .form import GoalForm
 
 
-def goal_list(request):
+def goals_list(request):
     goals = Goals.objects.filter(user=request.user)
-    return render(request, 'goals/goal_list.html', {'goals': goals})
+    return render(request, 'goals/goals_list.html', {'goals': goals})
 
 
 def goal_create(request):

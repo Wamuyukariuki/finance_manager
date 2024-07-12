@@ -1,11 +1,17 @@
 from django import forms
-from .models import Expense, ExpenseCategory
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django import forms
+from .models import Expense, ExpenseCategory
 
 
 class ExpenseForm(forms.ModelForm):
-    category = forms.ModelChoiceField(queryset=ExpenseCategory.objects.all(), empty_label=None)
+    def __init__(self, *args, user=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        if user:
+            self.fields['category'].queryset = ExpenseCategory.objects.filter(user=user)
+
+    category = forms.ModelChoiceField(queryset=ExpenseCategory.objects.none(), empty_label=None)
 
     class Meta:
         model = Expense

@@ -9,13 +9,14 @@
 </head>
 <body>
     <div class="login-container">
-        <h1>Finance Manager</h1>
-        <form method="post">
+        <h1>Welcome to Finance Manager</h1>
+        <p>Enter your Username and password to log in or create an account.</p>
+        <form method="post" class="login-form">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit">Sign In</button>
+            <button type="submit" class="login-button">Sign In</button>
         </form>
-        <p>You don't have an account? <a href="{% url 'signup' %}">Sign Up</a></p>
+        <p class="signup-prompt">Don't have an account? <a href="{% url 'signup' %}">Sign Up</a></p>
     </div>
 </body>
 </html>

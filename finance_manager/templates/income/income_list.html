@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Income List{% endblock %}
+
+{% block content %}
+  <h2>Income List</h2>
+  <table>
+    <tr>
+      <th>Date</th>
+      <th>Category</th>
+      <th>Amount</th>
+      <th>Description</th>
+    </tr>
+    {% for income in incomes %}
+    <tr>
+      <td>{{ income.date }}</td>
+      <td>{{ income.category }}</td>
+      <td>{{ income.amount }}</td>
+      <td>{{ income.description }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+{% endblock %}

@@ -1,7 +1,7 @@
-from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .forms import SavingForm
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Saving
+from .forms import SavingForm
 
 @login_required
 def savings_list(request):

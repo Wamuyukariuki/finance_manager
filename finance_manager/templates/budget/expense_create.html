@@ -1,14 +1,12 @@
-<!-- budget/templates/budget/expense_create.html -->
-
 {% extends 'base.html' %}
 {% load static %}
 
 {% block title %}Create Expense{% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container" style="text-align: center;">
     <h2>Create Expense</h2>
-    <form method="post">
+    <form method="post" style="display: inline-block; text-align: left;">
         {% csrf_token %}
         <!-- Display form errors if any -->
         {% if form.errors %}
@@ -24,23 +22,23 @@
             </div>
         {% endif %}
 
-        <div>
+        <div style="margin-bottom: 10px;">
             {{ form.category.errors }}
             {{ form.category.label_tag }}
             {{ form.category }}
         </div>
 
-        <div>
+        <div style="margin-bottom: 10px;">
             <label for="id_amount">Amount:</label>
             {{ form.amount }}
         </div>
 
-        <div>
+        <div style="margin-bottom: 10px;">
             <label for="id_date">Date:</label>
             {{ form.date }}
         </div>
 
-        <div>
+        <div style="margin-bottom: 10px;">
             <label for="id_description">Description:</label>
             {{ form.description }}
         </div>

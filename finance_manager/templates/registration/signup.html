@@ -5,17 +5,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Finance Manager - Sign Up</title>
-    <link rel="stylesheet" href="{% static 'css/login_styles.css' %}">
+    <link href="https://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'css/signup_styles.css' %}">
 </head>
 <body>
-    <div class="login-container">
-        <h1>Finance Manager</h1>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Sign Up</button>
-        </form>
-        <p>Already have an account? <a href="{% url 'login' %}">Log In</a></p>
+    <div class="container bootstrap snippets bootdey">
+        <div class="header">
+            <ul class="nav nav-pills pull-right">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li class="active"><a href="{% url 'signup' %}">Register</a></li>
+                <li><a href="{% url 'about' %}">About</a></li>
+            </ul>
+            <h3 class="text-muted prj-name">Finance Manager</h3>
+        </div>
+
+        <div class="jumbotron text-center" style="min-height:400px;height:auto;">
+            <div class="col-md-10 col-md-offset-2">
+                <form class="form-horizontal" role="form" method="post">
+                    {% csrf_token %}
+                    <div class="form-group text-center">
+                        <div class="col-sm-10 reg-icon">
+                            <span class="fa fa-user fa-3x"> Sign up</span>
+                        </div>
+                    </div>
+                    {{ form.non_field_errors }}
+                    {% for field in form %}
+                    <div class="form-group">
+                        <div class="col-sm-10">
+                            {{ field.errors }}
+                            {{ field.label_tag }} {{ field }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <div class="form-group">
+                        <div class="col-sm-10">
+                            <button type="submit" class="btn btn-info">
+                                <span class="glyphicon glyphicon-share-alt"></span> Register
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <p class="explanation">Already have an account? <a href="{% url 'login' %}">Log In</a></p>
+            </div>
+        </div>
     </div>
 </body>
 </html>
