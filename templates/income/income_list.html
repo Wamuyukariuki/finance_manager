@@ -3,33 +3,15 @@
 {% block title %}Income List{% endblock %}
 
 {% block content %}
-  <h2>Income List</h2>
-
-  <!-- Optional: Add a link to create new income entries -->
-  <a href="{% url 'add_income' %}" class="btn btn-primary">Add New Income</a>
-
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Date</th>
-        <th>Category</th>
-        <th>Amount</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for income in incomes %}
-      <tr>
-        <td>{{ income.date }}</td>
-        <td>{{ income.category }}</td>
-        <td>{{ income.amount }}</td>
-        <td>{{ income.description }}</td>
-      </tr>
-      {% empty %}
-      <tr>
-        <td colspan="4">No income records found.</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+<div class="card-container">
+    {% for income in incomes %}
+    <div class="card">
+        <h2>{{ income.category }}</h2>
+        <p><strong>Amount:</strong> ${{ income.amount }}</p>
+        <p><strong>Date:</strong> {{ income.date }}</p>
+        <p>{{ income.description }}</p>
+        <a href="{% url 'edit_income' income.pk %}" class="btn">Edit</a>
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}

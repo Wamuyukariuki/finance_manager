@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Income{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Edit Income</h2>
+    <form method="post">
+        {% csrf_token %}
+        <!-- Display form errors if any -->
+        {% if form.errors %}
+            <div class="alert alert-danger">
+                <strong>Error!</strong> Please correct the following errors:
+                <ul>
+                    {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+        <div style="margin-bottom: 10px;">
+            {{ form.amount.errors }}
+            {{ form.amount.label_tag }}
+            {{ form.amount }}
+        </div>
+
+        <div style="margin-bottom: 10px;">
+            {{ form.description.errors }}
+            {{ form.description.label_tag }}
+            {{ form.description }}
+        </div>
+
+        <div style="margin-bottom: 10px;">
+            {{ form.date.errors }}
+            {{ form.date.label_tag }}
+            {{ form.date }}
+        </div>
+
+        <button type="submit">Save Changes</button>
+    </form>
+</div>
+{% endblock %}

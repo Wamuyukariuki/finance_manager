@@ -48,11 +48,12 @@ header h1 {
 nav {
     width: 200px;
     background-color: #00509E; /* Light Blue */
-    height: 100vh;
     position: fixed;
-    top: 0;
+    top: 4rem; /* Adjusted to account for header's height */
     left: 0;
-    padding-top: 4rem; /* Adjust to ensure it starts below header */
+    bottom: 0; /* Ensures nav extends to bottom of viewport */
+    padding-top: 1rem; /* Space between the top and the first link */
+    overflow-y: auto; /* Enables scrolling if content overflows */
 }
 
 nav ul {
@@ -79,7 +80,8 @@ nav ul li a:hover {
 main {
     margin-left: 200px; /* Ensure this matches the nav width */
     padding: 2rem;
-    min-height: calc(100vh - 4rem); /* Ensure content area adjusts for header height */
+    min-height: calc(100vh - 4rem); /* Adjusted for header height */
+    overflow-x: hidden; /* Prevent horizontal overflow */
 }
 
 footer {
@@ -91,7 +93,6 @@ footer {
     width: 100%;
     bottom: 0;
 }
-
 
 .card-container {
     display: flex;
@@ -124,6 +125,7 @@ footer {
     font-size: 1rem;
     margin: 0;
 }
+
 /* Ensure the dropdown is styled properly */
 select {
     width: 100%;
