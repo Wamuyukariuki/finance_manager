@@ -1,0 +1,63 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>Finance Manager</h1>
+            <div class="user-info">
+                {% if user.is_authenticated %}
+                    <span>Welcome, {{ user.username }}</span>
+                    <!-- Update logout link to use a POST request -->
+                    <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="logout">Logout</button>
+                    </form>
+                {% else %}
+                    <a class="login" href="{% url 'login' %}">Login</a>
+                    <a class="signup" href="{% url 'signup' %}">Sign Up</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+            <li><a href="{% url 'income_list' %}">Income</a></li>
+            <li><a href="{% url 'investment_list' %}">Investments</a></li>
+            <li><a href="{% url 'expense_list' %}">Expenses</a></li>
+            <li><a href="{% url 'debt_list' %}">Debts</a></li>
+            <li><a href="{% url 'savings_list' %}">Savings</a></li>
+            <li><a href="{% url 'goal_list' %}">Goals</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        {% block content %}
+        <div class="card-container">
+            <div class="card">
+                <h2>Income</h2>
+                <p>Manage your income sources.</p>
+            </div>
+            <div class="card">
+                <h2>Investments</h2>
+                <p>Track your investments.</p>
+            </div>
+            <!-- Add more cards as needed -->
+        </div>
+        {% endblock %}
+    </main>
+
+    <footer>
+        &copy; {% now "Y" %} Finance Manager. All rights reserved.
+    </footer>
+</body>
+</html>

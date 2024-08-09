@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+<h1>Dashboard</h1>
+
+<div class="card-container">
+    <!-- dashboard.html -->
+    <div class="card" onclick="location.href='{% url 'income_list' %}'">
+        <h2>Total Income</h2>
+        <p>{{ total_income }}</p>
+    </div>
+    <div class="card" onclick="location.href='{% url 'investment_list' %}'">
+        <h2>Total Investments</h2>
+        <p>{{ total_investments }}</p>
+    </div>
+    <div class="card" onclick="location.href='{% url 'expense_list' %}'">
+        <h2>Total Expenses</h2>
+        <p>{{ total_expenses }}</p>
+    </div>
+    <div class="card" onclick="location.href='{% url 'debt_list' %}'">
+        <h2>Total Debts</h2>
+        <p>{{ total_debts }}</p>
+    </div>
+    <div class="card" onclick="location.href='{% url 'savings_list' %}'">
+        <h2>Total Savings</h2>
+        <p>{{ total_savings }}</p>
+    </div>
+    <div class="card" onclick="location.href='{% url 'goal_list' %}'">
+        <h2>Goals</h2>
+        <p>{{ goals|length }} Goals</p>
+    </div>
+
+</div>
+
+{% endblock %}

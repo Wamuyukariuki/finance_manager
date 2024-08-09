@@ -1,0 +1,138 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #003366; /* Dark Blue */
+    color: #fff;
+    padding: 1rem;
+    position: relative; /* Ensure header stays on top */
+    z-index: 1; /* Make sure header is above other content */
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    margin: 0; /* Remove default margin */
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.user-info span {
+    margin-right: 1rem;
+}
+
+.user-info .logout, .user-info .login, .user-info .signup {
+    color: #fff;
+    text-decoration: none;
+    background-color: #00509E; /* Light Blue */
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    margin-left: 0.5rem;
+}
+
+.user-info .logout:hover, .user-info .login:hover, .user-info .signup:hover {
+    background-color: #003366;
+}
+
+nav {
+    width: 200px;
+    background-color: #00509E; /* Light Blue */
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding-top: 4rem; /* Adjust to ensure it starts below header */
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    margin-bottom: 1rem;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    padding: 0.5rem 1rem;
+}
+
+nav ul li a:hover {
+    background-color: #003366;
+}
+
+main {
+    margin-left: 200px; /* Ensure this matches the nav width */
+    padding: 2rem;
+    min-height: calc(100vh - 4rem); /* Ensure content area adjusts for header height */
+}
+
+footer {
+    background-color: #003366; /* Dark Blue */
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+
+
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-around;
+}
+
+.card {
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    width: 200px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.card h2 {
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+.card p {
+    font-size: 1rem;
+    margin: 0;
+}
+/* Ensure the dropdown is styled properly */
+select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+select:focus {
+    border-color: #00509E; /* Light Blue */
+    outline: none;
+}
