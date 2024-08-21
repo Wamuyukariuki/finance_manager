@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% block title %}Saving Form{% endblock %}
+{% block content %}
+  <style>
+    .form-container {
+      max-width: 600px; /* Adjust max-width as needed */
+      margin: auto; /* Center the form horizontally */
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .form-row {
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+    }
+
+    .form-row label {
+      min-width: 150px; /* Adjust label width as needed */
+      text-align: right;
+      margin-right: 10px;
+    }
+
+    .form-row input,
+    .form-row select,
+    .form-row textarea {
+      flex: 1;
+      padding: 5px;
+      box-sizing: border-box;
+    }
+
+    .description-container {
+      display: flex;
+      align-items: flex-start; /* Align description label and field to the top */
+      margin-bottom: 10px;
+    }
+
+    .description-container label {
+      min-width: 150px; /* Adjust label width as needed */
+      text-align: right;
+      margin-right: 10px;
+    }
+
+    .description-container textarea {
+      flex: 1;
+      max-width: 500px; /* Adjust max-width as needed */
+      min-height: 80px; /* Reduced height for description */
+      padding: 5px;
+      box-sizing: border-box;
+    }
+
+    .submit-container {
+      margin-top: 10px; /* Adjust top margin for button */
+      text-align: right;
+    }
+
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 10px;
+    }
+  </style>
+
+  <h1>{{ form.instance.pk|yesno:"Edit Saving Goal,Create Saving Goal" }}</h1>
+  <form method="post" class="form-container">
+    {% csrf_token %}
+    <div class="form-row">
+      <label for="{{ form.name.id_for_label }}">Name:</label>
+      {{ form.name }}
+    </div>
+    <div class="form-row">
+      <label for="{{ form.target_amount.id_for_label }}">Target amount:</label>
+      {{ form.target_amount }}
+    </div>
+    <div class="form-row">
+      <label for="{{ form.current_amount.id_for_label }}">Current amount:</label>
+      {{ form.current_amount }}
+    </div>
+    <div class="form-row">
+      <label for="{{ form.start_date.id_for_label }}">Start date:</label>
+      {{ form.start_date }}
+    </div>
+    <div class="form-row">
+      <label for="{{ form.due_date.id_for_label }}">Due date:</label>
+      {{ form.due_date }}
+    </div>
+    <div class="description-container">
+      <label for="{{ form.description.id_for_label }}">Description:</label>
+      {{ form.description }}
+    </div>
+    <div class="submit-container">
+      <button type="submit">Save</button>
+    </div>
+  </form>
+  <a href="{% url 'savings_list' %}" class="back-link">Back to Savings List</a>
+{% endblock %}

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Debt</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center; /* Center align the contents */
+            background-color: #f0f0f0; /* Example background color */
+            padding: 20px;
+        }
+        form {
+            max-width: 400px; /* Limit form width */
+            margin: 0 auto; /* Center the form horizontally */
+            background-color: #fff; /* White background */
+            padding: 20px;
+            border-radius: 5px; /* Rounded corners */
+            box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Example box shadow */
+        }
+        h1 {
+            margin-bottom: 20px; /* Space below heading */
+        }
+        .errorlist {
+            color: red; /* Error message color */
+            margin-bottom: 10px; /* Space below error messages */
+        }
+        button {
+            background-color: #007bff; /* Button color */
+            color: #fff; /* Text color */
+            border: none; /* Remove default border */
+            padding: 10px 20px; /* Padding inside button */
+            cursor: pointer; /* Pointer cursor on hover */
+            border-radius: 5px; /* Rounded corners */
+        }
+        button:hover {
+            background-color: #0056b3; /* Darker background on hover */
+        }
+    </style>
+</head>
+<body>
+    <h1>Add Debt</h1>
+    <form method="post">
+        {% csrf_token %}
+
+        <!-- Display form errors if any -->
+        {% if form.errors %}
+            <div class="errorlist">
+                <strong>Error!</strong> Please correct the following errors:
+                <ul>
+                    {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+        {{ form.as_p }}
+        <button type="submit">Save Debt</button>
+    </form>
+</body>
+</html>

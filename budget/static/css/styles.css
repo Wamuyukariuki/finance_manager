@@ -1,0 +1,251 @@
+/* Reset default margin and padding for all elements */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+/* Header Styles */
+header {
+    background-color: #003366; /* Dark Blue */
+    color: #fff;
+    padding: 1rem;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000; /* Ensures the header is on top of other elements */
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px; /* Limit header content width */
+    margin: 0 auto; /* Center align within the viewport */
+}
+
+header h1 {
+    margin: 0; /* Remove default margin */
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.user-info span {
+    margin-right: 1rem;
+}
+
+.user-info .logout {
+    color: #fff;
+    text-decoration: none;
+    background-color: #00509E; /* Light Blue */
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+}
+
+.user-info .logout:hover {
+    background-color: #003366;
+}
+
+/* Navigation Styles */
+nav {
+    width: 200px;
+    background-color: #00509E; /* Light Blue */
+    height: calc(100vh - 64px); /* Adjust height to fit below the header */
+    position: fixed;
+    top: 64px; /* Height of the header */
+    left: 0;
+    padding-top: 2rem;
+    z-index: 999; /* Ensure the nav is below the header */
+    overflow-y: auto; /* Allow scrolling if content is too tall */
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    margin-bottom: 1rem;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    padding: 0.5rem 1rem;
+}
+
+nav ul li a:hover {
+    background-color: #003366;
+}
+
+/* Main Content Styles */
+main {
+    padding: 24px; /* Corrected padding value */
+    margin-top: 60px; /* Corrected margin-top value to account for height of the header */
+    max-width: calc(100% - 200px); /* Adjust max-width to account for nav width and padding */
+    margin-left: 200px; /* Adjusted to accommodate nav width */
+}
+
+/* Footer Styles */
+footer {
+    background-color: #003366; /* Dark Blue */
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+    position: fixed;
+    width: calc(100% - 200px); /* Subtract nav width */
+    bottom: 0;
+    left: 200px; /* Match the nav width */
+}
+
+/* Dashboard Card Styles */
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.card {
+    background-color: #007bff; /* Default blue shade */
+    color: #fff;
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    text-decoration: none;
+    flex: 1;
+    max-width: 200px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.card-blue {
+    background-color: #007bff; /* Blue */
+}
+
+.card-light-blue {
+    background-color: #66b2ff; /* Light Blue */
+}
+
+.card-dark-blue {
+    background-color: #004080; /* Dark Blue */
+}
+
+.card-mid-blue {
+    background-color: #3399ff; /* Medium Blue */
+}
+
+.card h3 {
+    margin-bottom: 0.5rem;
+}
+
+.card:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    transform: scale(1.05);
+}
+
+/* Dashboard Container Styles */
+.dashboard-container {
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* Financial Summary Table Styles */
+.financial-summary table, .budget-recommendations table, .goals-section table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.financial-summary th, .financial-summary td,
+.budget-recommendations th, .budget-recommendations td,
+.goals-section th, .goals-section td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.financial-summary th, .budget-recommendations th, .goals-section th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.deficit td {
+    color: #f44336; /* Red for deficit */
+    font-weight: bold;
+}
+
+.surplus td {
+    color: #4caf50; /* Green for surplus */
+    font-weight: bold;
+}
+
+/* Chart and Graph Styles */
+.chart-container {
+    max-width: 600px; /* Adjusted size */
+    margin: auto;
+    padding: 20px;
+}
+
+/* Standard Grid Styles for Tables */
+.table-container {
+    width: 100%;
+    overflow-x: auto; /* Allows horizontal scrolling if needed */
+    margin-bottom: 2rem; /* Space below the table */
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5rem;
+}
+
+.table th, .table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+/* Optional: Zebra striping for rows */
+.table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Progress Bar Styles */
+.progress {
+    position: relative;
+    height: 20px;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0; /* Default to 0%, to be set dynamically */
+    background-color: #4caf50;
+    border-radius: 10px;
+    text-align: center;
+    line-height: 20px; /* Center text vertically */
+    color: white;
+}

@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+<div class="dashboard-container">
+    <div class="card-container">
+        <a href="{% url 'income_list' %}" class="card card-blue">
+            <h3>Total Income</h3>
+            <p>KES {{ total_income }}</p>
+        </a>
+        <a href="{% url 'investment_list' %}" class="card card-light-blue">
+            <h3>Total Investments</h3>
+            <p>KES {{ total_investments }}</p>
+        </a>
+        <a href="{% url 'expense_list' %}" class="card card-dark-blue">
+            <h3>Total Expenses</h3>
+            <p>KES {{ total_expenses }}</p>
+        </a>
+        <a href="{% url 'debt_list' %}" class="card card-mid-blue">
+            <h3>Total Debts</h3>
+            <p>KES {{ total_debts }}</p>
+        </a>
+        <a href="{% url 'savings_list' %}" class="card card-light-blue">
+            <h3>Total Savings</h3>
+            <p>KES {{ total_savings }}</p>
+        </a>
+    </div>
+
+    <div class="financial-summary">
+        <h2>Financial Summary for {{ start_of_month|date:"F Y" }}</h2>
+        <table>
+            <tbody>
+                <tr>
+                    <th>Financial Standing</th>
+                    <td>KES {{ financial_standing }}</td>
+                </tr>
+                {% if is_deficit %}
+                <tr>
+                    <th>Deficit Amount</th>
+                    <td>KES {{ deficit_amount }}</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="goals-section">
+        <h3>Goals</h3>
+        {% if goals %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Goal Name</th>
+                        <th>Target Amount</th>
+                        <th>Current Amount</th>
+                        <th>Due Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for goal in goals %}
+                        <tr>
+                            <td>{{ goal.name }}</td>
+                            <td>KES {{ goal.target_amount }}</td>
+                            <td>KES {{ goal.current_amount }}</td>
+                            <td>{{ goal.due_date }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No goals set.</p>
+        {% endif %}
+        {% if remaining_goals > 0 %}
+        <p>You need KES {{ remaining_goals }} more to reach all your goals.</p>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

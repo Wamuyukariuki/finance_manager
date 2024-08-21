@@ -1,0 +1,72 @@
+body {
+    background-color: #fff; /* Dark Blue */
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.login-container {
+    text-align: center;
+    padding: 2rem;
+    width: 100%;
+    max-width: 400px;
+    background-color: #003366; /* White background */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+}
+
+.login-container h1 {
+    font-size: 2rem;
+    color: #fff; /* White text */
+    margin-bottom: 1rem;
+}
+
+.login-container p {
+    color: #ccc; /* Lighter text */
+    margin-bottom: 1.5rem;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-form input {
+    border: 1px solid #ccc; /* Lighter border */
+    border-radius: 4px;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+.login-button {
+    background-color: #00509E; /* Light Blue */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 0.75rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+    background-color: #003366; /* Darker Blue on hover */
+}
+
+.signup-prompt {
+    margin-top: 1rem;
+}
+
+.signup-prompt a {
+    color: #00509E; /* Light Blue */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.signup-prompt a:hover {
+    text-decoration: underline;
+}

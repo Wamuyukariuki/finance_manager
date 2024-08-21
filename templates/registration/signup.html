@@ -1,0 +1,106 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Manager - Sign Up</title>
+    <link rel="stylesheet" href="{% static 'css/signup_styles.css' %}">
+    <style>
+        body {
+            margin-top: 20px;
+            background-color: #f2f3f8; /* Light gray-blue background */
+        }
+        .card {
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 15px 1px rgba(52,40,104,.08);
+            border: 1px solid #e5e9f2;
+            border-radius: .2rem;
+        }
+        .card-body {
+            padding: 2rem;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .h2 {
+            color: #003366; /* Dark Blue */
+        }
+        .btn-primary {
+            background-color: #003366; /* Dark Blue */
+            border-color: #003366;
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background-color: #002244; /* Darker Blue */
+            border-color: #002244;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .password-conditions {
+            font-size: 0.875rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+        .signup-container {
+            max-width: 500px;
+            width: 100%;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 0 auto;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="signup-container">
+        <h1 class="h2">Finance Manager</h1>
+        <p>Create your account to get started.</p>
+        <form method="post">
+            {% csrf_token %}
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        {{ form.username }}
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        {{ form.email }}
+                    </div>
+                    <div class="form-group">
+                        <label for="password1">Password</label>
+                        {{ form.password1 }}
+                        <div class="password-conditions">
+                            <p>Your password must be at least 8 characters long and include a mix of letters and numbers.</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password2">Confirm Password</label>
+                        {{ form.password2 }}
+                    </div>
+                    <div class="text-center mt-3">
+                        <button type="submit" class="btn btn-lg btn-primary">Sign Up</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <p class="text-muted mt-3 mb-0">Already have an account? <a href="{% url 'login' %}" class="text-primary">Log In</a></p>
+    </div>
+</body>
+</html>

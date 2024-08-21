@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}Investment List{% endblock %}
+
+{% block content %}
+    <h2>Investment List</h2>
+    <a href="{% url 'add_investment' %}">Add Investment</a>
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Investment Category</th>
+                    <th>Current Value</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for investment in investments %}
+                    <tr>
+                        <td>{{ investment.category }}</td> <!-- Changed from name to category -->
+                        <td>KES {{ investment.current_value }}</td>
+                        <td>{{ investment.date }}</td>
+                        <td>
+                            <a href="{% url 'update_investment' investment.pk %}">Edit</a>
+                            <a href="{% url 'delete_investment' investment.pk %}">Delete</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4">No investments found.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>Total</th>
+                    <th>KES {{ total_investment }}</th> <!-- Ensure this variable is passed correctly -->
+                    <th colspan="2"></th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+{% endblock %}

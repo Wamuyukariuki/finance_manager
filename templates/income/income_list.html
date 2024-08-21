@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Income List{% endblock %}
+{% block content %}
+    <h2>Income List</h2>
+    <a href="{% url 'add_income' %}">Add Income</a>
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for income in incomes %}
+                    <tr>
+                        <td>KES {{ income.amount }}</td>
+                        <td>{{ income.date }}</td>
+                        <td>{{ income.description }}</td>
+                        <td>
+                            <a href="{% url 'update_income' income.pk %}">Edit</a>
+                            <a href="{% url 'delete_income' income.pk %}">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>Total</th>
+                    <th>KES {{ total_income }}</th>
+                    <th colspan="2"></th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+{% endblock %}

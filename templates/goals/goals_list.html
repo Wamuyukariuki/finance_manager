@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}My Goals{% endblock %}
+
+{% block content %}
+<h2>My Goals</h2>
+<a href="{% url 'goal_create' %}">Create New Goal</a>
+<div class="table-container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Current Amount</th>
+                <th>Target Amount</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for goal in goals %}
+            <tr>
+                <td><strong>{{ goal.name }}</strong></td>
+                <td>KES {{ goal.current_amount }}</td>
+                <td>KES {{ goal.target_amount }}</td>
+                <td>
+                    <a href="{% url 'goal_edit' goal.id %}">Edit</a> |
+                    <a href="{% url 'goal_delete' goal.id %}">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Saving List{% endblock %}
+{% block content %}
+    <h2>Saving List</h2>
+    <a href="{% url 'add_saving' %}">Add Saving</a>
+    <div class="table-container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Current Amount</th>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for saving in savings %}
+                    <tr>
+                        <td>KES {{ saving.current_amount }}</td>
+                        <td>{{ saving.date }}</td>
+                        <td>{{ saving.description }}</td>
+                        <td>
+                            <a href="{% url 'update_saving' saving.pk %}">Edit</a>
+                            <a href="{% url 'delete_saving' saving.pk %}">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>Total</th>
+                    <th>KES {{ total_savings }}</th>
+                    <th colspan="2"></th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+{% endblock %}
