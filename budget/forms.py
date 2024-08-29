@@ -7,17 +7,20 @@ class ExpenseForm(forms.ModelForm):
     class Meta:
         model = Expense
         fields = ['category', 'amount', 'date', 'description']
+        widgets = {
+            'category': forms.Select(choices=[(c.id, c.name) for c in ExpenseCategory.objects.all()]),
+        }
 
-    def __init__(self, *args, user=None, **kwargs):
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
         if user:
-            # Populate the category choices based on the logged-in user
-            self.fields['category'].queryset = ExpenseCategory.objects.filter(user=user)
-        # Set default widget attributes for form fields
+            self.fields['category'].queryset = ExpenseCategory.objects.all()
         self.fields['category'].widget.attrs.update({'class': 'form-control'})
-        self.fields['date'].widget.attrs.update({'type': 'date', 'class': 'form-control'})
+        self.fields['date'].widget = forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
         self.fields['amount'].widget.attrs.update({'class': 'form-control'})
         self.fields['description'].widget.attrs.update({'class': 'form-control', 'rows': 4})
+
 
 class SignUpForm(UserCreationForm):
     email = forms.EmailField(max_length=254, help_text='Required. Inform a valid email address.')

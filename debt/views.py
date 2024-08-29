@@ -55,9 +55,11 @@ def edit_debt(request, pk):
 
 
 @login_required
-def delete_debt(request, id):
-    debt = get_object_or_404(Debt, id=id)
+def delete_debt(request, pk):
+    debt = get_object_or_404(Debt, pk=pk)
+
     if request.method == 'POST':
         debt.delete()
-        return redirect('debt_list')  # Adjust the redirect target as needed
-    return render(request, 'debt/confirm_delete.html', {'debt': debt})
+        return redirect('debt_list')  # Redirect to the debt list after deletion
+
+    return render(request, 'debt/delete_debt.html', {'debt': debt})

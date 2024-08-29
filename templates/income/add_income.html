@@ -1,10 +1,32 @@
 {% extends 'base.html' %}
 {% block title %}Add Income{% endblock %}
+
 {% block content %}
-<h2>Add Income</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Add Income</button>
-</form>
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="w-100" style="max-width: 600px;">
+        <h2 class="text-center" style="margin-bottom: 20px;">Add Income</h2> <!-- Set margin-bottom explicitly -->
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div style="margin-bottom: 15px;"> <!-- Space between fields -->
+                {{ form.category.label_tag }} {{ form.category }} <!-- Category Field -->
+            </div>
+            <div style="margin-bottom: 15px;"> <!-- Space between fields -->
+                {{ form.income_source.label_tag }} {{ form.income_source }} <!-- Income Source Field -->
+            </div>
+            <div style="margin-bottom: 15px;"> <!-- Space between fields -->
+                {{ form.amount.label_tag }} {{ form.amount }} <!-- Amount Field -->
+            </div>
+            <div style="margin-bottom: 15px;"> <!-- Space between fields -->
+                {{ form.date.label_tag }} {{ form.date }} <!-- Date Field -->
+            </div>
+            <div style="margin-bottom: 20px;"> <!-- Space between fields -->
+                {{ form.description.label_tag }} {{ form.description }} <!-- Description Field -->
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100" style="margin-top: 15px;">Add Income</button> <!-- Set margin-top explicitly -->
+        </form>
+    </div>
+</div>
 {% endblock %}

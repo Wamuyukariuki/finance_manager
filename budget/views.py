@@ -3,6 +3,7 @@ from dateutil.relativedelta import relativedelta
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.db.models import Sum
 from django.shortcuts import get_object_or_404, render, redirect
 from django.utils import timezone
@@ -15,7 +16,6 @@ from .forms import SignUpForm, ExpenseForm
 from .models import Expense
 
 logger = logging.getLogger(__name__)
-
 
 @login_required
 def dashboard(request):
@@ -128,6 +128,7 @@ def expense_list(request):
         logger.error(f"Error in expense_list view: {str(e)}")
         return render(request, 'budget/expense_list.html', {})
 
+
 @login_required
 def add_expense(request):
     if request.method == 'POST':
@@ -144,6 +145,7 @@ def add_expense(request):
         form = ExpenseForm(user=request.user)
     return render(request, 'budget/add_expense.html', {'form': form})
 
+
 @login_required
 def update_expense(request, pk):
     expense = get_object_or_404(Expense, pk=pk, user=request.user)
@@ -157,6 +159,7 @@ def update_expense(request, pk):
         form = ExpenseForm(instance=expense, user=request.user)
     return render(request, 'budget/update_expense.html', {'form': form})
 
+
 @login_required
 def delete_expense(request, pk):
     expense = get_object_or_404(Expense, pk=pk, user=request.user)
@@ -166,9 +169,9 @@ def delete_expense(request, pk):
         return redirect('expense_list')
     return render(request, 'budget/delete_expense.html', {'expense': expense})
 
-
 def home(request):
     return render(request, 'home.html')
+
 
 def about(request):
     return render(request, 'about.html')

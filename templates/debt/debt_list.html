@@ -1,38 +1,42 @@
 {% extends 'base.html' %}
+
 {% block title %}Debt List{% endblock %}
+
 {% block content %}
-    <h2>Debt List</h2>
-    <a href="{% url 'add_debt' %}">Add Debt</a>
-    <div class="table-container">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Amount</th>
-                    <th>Due Date</th>
-                    <th>Description</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for debt in debts %}
+    <div class="container mt-4">
+        <h2 class="text-center mb-4">Debt List</h2>
+        <a href="{% url 'add_debt' %}" class="btn btn-primary mb-3">Add Debt</a>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead>
                     <tr>
-                        <td>KES {{ debt.amount }}</td>
-                        <td>{{ debt.due_date }}</td>
-                        <td>{{ debt.description }}</td>
-                        <td>
-                            <a href="{% url 'update_debt' debt.pk %}">Edit</a>
-                            <a href="{% url 'delete_debt' debt.pk %}">Delete</a>
-                        </td>
+                        <th>Amount</th>
+                        <th>Due Date</th>
+                        <th>Description</th>
+                        <th>Actions</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-            <tfoot>
-                <tr>
-                    <th>Total</th>
-                    <th>KES {{ total_debts }}</th>
-                    <th colspan="2"></th>
-                </tr>
-            </tfoot>
-        </table>
+                </thead>
+                <tbody>
+                    {% for debt in debts %}
+                        <tr>
+                            <td>KES {{ debt.amount }}</td>
+                            <td>{{ debt.due_date }}</td>
+                            <td>{{ debt.description }}</td>
+                            <td>
+                                <a href="{% url 'update_debt' debt.pk %}" class="btn btn-warning btn-sm">Edit</a> |
+                                <a href="{% url 'delete_debt' debt.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Total</th>
+                        <th>KES {{ total_debts }}</th>
+                        <th colspan="2"></th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
     </div>
 {% endblock %}

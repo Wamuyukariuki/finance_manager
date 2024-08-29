@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Debt{% endblock %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="w-100" style="max-width: 600px;">
+        <h2 class="text-center" style="margin-bottom: 20px;">Delete Debt</h2> <!-- Heading -->
+
+        <div class="alert alert-warning" role="alert">
+            <p>Are you sure you want to delete this debt?</p>
+            <p><strong>Amount:</strong> KES {{ debt.amount }}</p>
+            <p><strong>Due Date:</strong> {{ debt.due_date }}</p>
+            <p><strong>Description:</strong> {{ debt.description }}</p>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger w-100" style="margin-top: 15px;">Delete Debt</button>
+            <a href="{% url 'debt_list' %}" class="btn btn-secondary w-100" style="margin-top: 10px;">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

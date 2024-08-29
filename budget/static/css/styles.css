@@ -16,9 +16,9 @@ header {
     color: #fff;
     padding: 1rem;
     position: fixed;
-    width: 100%;
+    width: calc(100% - 200px); /* Subtract nav width */
     top: 0;
-    left: 0;
+    left: 200px; /* Match the nav width */
     z-index: 1000; /* Ensures the header is on top of other elements */
 }
 
@@ -68,33 +68,13 @@ nav {
     overflow-y: auto; /* Allow scrolling if content is too tall */
 }
 
-nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-nav ul li {
-    margin-bottom: 1rem;
-}
-
-nav ul li a {
-    color: #fff;
-    text-decoration: none;
-    display: block;
-    padding: 0.5rem 1rem;
-}
-
-nav ul li a:hover {
-    background-color: #003366;
-}
-
 /* Main Content Styles */
 main {
     padding: 24px; /* Corrected padding value */
-    margin-top: 60px; /* Corrected margin-top value to account for height of the header */
-    max-width: calc(100% - 200px); /* Adjust max-width to account for nav width and padding */
+    margin-top: 64px; /* Adjusted margin-top value to account for height of the header */
     margin-left: 200px; /* Adjusted to accommodate nav width */
+    margin-bottom: 64px; /* Ensure there’s space for the footer */
+    max-width: calc(100% - 200px); /* Adjust max-width to account for nav width and padding */
 }
 
 /* Footer Styles */
@@ -107,6 +87,7 @@ footer {
     width: calc(100% - 200px); /* Subtract nav width */
     bottom: 0;
     left: 200px; /* Match the nav width */
+    z-index: 1000; /* Ensure the footer is on top of the content */
 }
 
 /* Dashboard Card Styles */
@@ -248,4 +229,49 @@ footer {
     text-align: center;
     line-height: 20px; /* Center text vertically */
     color: white;
+}
+
+/* Form Container Styles */
+.form-container {
+    max-width: 500px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.form-group button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.form-group button:hover {
+    background-color: #0056b3;
 }

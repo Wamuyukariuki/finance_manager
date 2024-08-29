@@ -1,67 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% load static %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Debt</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center; /* Center align the contents */
-            background-color: #f0f0f0; /* Example background color */
-            padding: 20px;
-        }
-        form {
-            max-width: 400px; /* Limit form width */
-            margin: 0 auto; /* Center the form horizontally */
-            background-color: #fff; /* White background */
-            padding: 20px;
-            border-radius: 5px; /* Rounded corners */
-            box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Example box shadow */
-        }
-        h1 {
-            margin-bottom: 20px; /* Space below heading */
-        }
-        .errorlist {
-            color: red; /* Error message color */
-            margin-bottom: 10px; /* Space below error messages */
-        }
-        button {
-            background-color: #007bff; /* Button color */
-            color: #fff; /* Text color */
-            border: none; /* Remove default border */
-            padding: 10px 20px; /* Padding inside button */
-            cursor: pointer; /* Pointer cursor on hover */
-            border-radius: 5px; /* Rounded corners */
-        }
-        button:hover {
-            background-color: #0056b3; /* Darker background on hover */
-        }
-    </style>
-</head>
-<body>
-    <h1>Add Debt</h1>
-    <form method="post">
-        {% csrf_token %}
+{% extends 'base.html' %}
 
-        <!-- Display form errors if any -->
-        {% if form.errors %}
-            <div class="errorlist">
-                <strong>Error!</strong> Please correct the following errors:
-                <ul>
-                    {% for field, errors in form.errors.items %}
-                        {% for error in errors %}
-                            <li>{{ error }}</li>
-                        {% endfor %}
-                    {% endfor %}
-                </ul>
+{% block title %}Add Debt{% endblock %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="w-100" style="max-width: 600px;">
+        <h2 class="text-center" style="margin-bottom: 20px;">Add Debt</h2> <!-- Set margin-bottom explicitly -->
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div style="margin-bottom: 15px;"> <!-- Space between fields -->
+                {{ form.amount.label_tag }} {{ form.amount }} <!-- Amount Field -->
             </div>
-        {% endif %}
+            <div style="margin-bottom: 15px;"> <!-- Space between fields -->
+                {{ form.due_date.label_tag }} {{ form.due_date }} <!-- Due Date Field -->
+            </div>
+            <div style="margin-bottom: 15px;"> <!-- Space between fields -->
+                {{ form.description.label_tag }} {{ form.description }} <!-- Description Field -->
+            </div>
+            <div style="margin-bottom: 20px;"> <!-- Space between fields -->
+                <!-- Any additional fields or notes can go here -->
+            </div>
 
-        {{ form.as_p }}
-        <button type="submit">Save Debt</button>
-    </form>
-</body>
-</html>
+            <button type="submit" class="btn btn-primary w-100" style="margin-top: 15px;">Save Debt</button> <!-- Set margin-top explicitly -->
+        </form>
+    </div>
+</div>
+{% endblock %}

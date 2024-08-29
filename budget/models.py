@@ -17,7 +17,7 @@ class ExpenseCategory(models.Model):
 
     # 'name' is used to store the category name
     name = models.CharField(max_length=100, choices=CATEGORY_CHOICES)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='expense_categories')
+
 
     def __str__(self):
         return self.name
@@ -32,3 +32,11 @@ class Expense(models.Model):
 
     def __str__(self):
         return f"{self.category.name}: {self.amount}"
+
+
+class UserExpenseCategory(models.Model):
+    name = models.CharField(max_length=100)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_expense_categories')
+
+    def __str__(self):
+        return f"{self.name} (User: {self.user.username})"

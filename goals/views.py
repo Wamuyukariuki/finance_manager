@@ -12,13 +12,19 @@ from .models import Goals
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 
+
 @login_required
 def goals_list(request):
     now = timezone.now()
     start_of_month = now.replace(day=1)
     end_of_month = start_of_month + relativedelta(months=1, days=-1)
 
-    goals_list = Goals.objects.filter(user=request.user, created_at__gte=start_of_month, created_at__lte=end_of_month)
+    # Order the queryset by 'created_at' to ensure consistent pagination
+    goals_list = Goals.objects.filter(
+        user=request.user,
+        created_at__gte=start_of_month,
+        created_at__lte=end_of_month
+    ).order_by('created_at')
 
     paginator = Paginator(goals_list, 10)  # Show 10 goals per page
     page_number = request.GET.get('page')
