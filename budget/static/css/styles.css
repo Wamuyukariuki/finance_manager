@@ -8,6 +8,8 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
+    padding-top: 64px; /* Space for the fixed header */
+    padding-bottom: 64px; /* Space for the fixed footer */
 }
 
 /* Header Styles */
@@ -16,22 +18,31 @@ header {
     color: #fff;
     padding: 1rem;
     position: fixed;
-    width: calc(100% - 200px); /* Subtract nav width */
+    width: 100%;
     top: 0;
-    left: 200px; /* Match the nav width */
+    left: 0;
     z-index: 1000; /* Ensures the header is on top of other elements */
+    display: flex;
+    justify-content: space-between; /* Space between header items */
+    align-items: center; /* Center items vertically */
 }
 
+/* Header Content Styles */
 .header-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1200px; /* Limit header content width */
-    margin: 0 auto; /* Center align within the viewport */
+    width: 100%;
 }
 
-header h1 {
-    margin: 0; /* Remove default margin */
+.header-content h1 {
+    margin: 0;
+}
+
+.header-content .user-info,
+.header-content .auth-links {
+    display: flex;
+    align-items: center;
 }
 
 .user-info {
@@ -43,38 +54,29 @@ header h1 {
     margin-right: 1rem;
 }
 
-.user-info .logout {
+.logout {
+    background-color: #ff4d4d; /* Red */
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.logout:hover {
+    background-color: #cc0000; /* Darker red */
+}
+
+.auth-links a {
+    margin-left: 1rem;
     color: #fff;
     text-decoration: none;
-    background-color: #00509E; /* Light Blue */
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
+    font-weight: bold;
 }
 
-.user-info .logout:hover {
-    background-color: #003366;
-}
-
-/* Navigation Styles */
-nav {
-    width: 200px;
-    background-color: #00509E; /* Light Blue */
-    height: calc(100vh - 64px); /* Adjust height to fit below the header */
-    position: fixed;
-    top: 64px; /* Height of the header */
-    left: 0;
-    padding-top: 2rem;
-    z-index: 999; /* Ensure the nav is below the header */
-    overflow-y: auto; /* Allow scrolling if content is too tall */
-}
-
-/* Main Content Styles */
-main {
-    padding: 24px; /* Corrected padding value */
-    margin-top: 64px; /* Adjusted margin-top value to account for height of the header */
-    margin-left: 200px; /* Adjusted to accommodate nav width */
-    margin-bottom: 64px; /* Ensure there’s space for the footer */
-    max-width: calc(100% - 200px); /* Adjust max-width to account for nav width and padding */
+.auth-links a:hover {
+    text-decoration: underline;
 }
 
 /* Footer Styles */
@@ -84,10 +86,62 @@ footer {
     text-align: center;
     padding: 1rem;
     position: fixed;
-    width: calc(100% - 200px); /* Subtract nav width */
+    width: 100%;
     bottom: 0;
-    left: 200px; /* Match the nav width */
+    left: 0;
     z-index: 1000; /* Ensure the footer is on top of the content */
+}
+
+/* Navigation Styles */
+nav {
+    width: 200px;
+    background-color: #00509E; /* Light Blue */
+    position: fixed;
+    top: 64px; /* Height of the header */
+    left: 0;
+    bottom: 0; /* Ensure it spans the full height */
+    padding-top: 2rem;
+    padding-bottom: 2rem; /* Optional: Add bottom padding for aesthetics */
+    z-index: 999; /* Ensure the nav is below the header */
+    overflow-y: auto; /* Allow scrolling if content is too tall */
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav li {
+    margin-bottom: 1rem; /* Space between cards */
+}
+
+.nav-card {
+    background-color: #007bff; /* Default blue shade */
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    display: block; /* Make the link act like a block element */
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow for card effect */
+}
+
+.nav-card:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    transform: scale(1.05);
+}
+
+.nav-card.active {
+    background-color: #003366; /* Darker blue for active state */
+    transform: scale(1.05);
+}
+
+/* Main Content Styles */
+.main-container {
+    margin-left: 200px; /* Adjusted to accommodate nav width */
+    padding: 24px; /* Padding for main content */
 }
 
 /* Dashboard Card Styles */

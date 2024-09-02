@@ -106,7 +106,10 @@ def signup(request):
 def expense_list(request):
     try:
         now = timezone.now()
-        start_of_month = now.replace(day=1)
+        year = int(request.GET.get('year', now.year))
+        month = int(request.GET.get('month', now.month))
+
+        start_of_month = timezone.datetime(year, month, 1).replace(tzinfo=timezone.get_current_timezone())
         end_of_month = start_of_month + relativedelta(months=1, days=-1)
 
         expenses = Expense.objects.filter(user=request.user, date__range=(start_of_month, end_of_month))
@@ -120,13 +123,15 @@ def expense_list(request):
         context = {
             'page_obj': page_obj,
             'total_expenses': total_expenses,
+            'year': year,
+            'month': month,
         }
         return render(request, 'budget/expense_list.html', context)
 
     except Exception as e:
         messages.error(request, f"Error loading expenses: {str(e)}")
         logger.error(f"Error in expense_list view: {str(e)}")
-        return render(request, 'budget/expense_list.html', {})
+        return render(request, 'budget/expense_list.html', {'error': 'Unable to load expenses.'})
 
 
 @login_required

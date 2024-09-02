@@ -30,15 +30,43 @@
     </header>
 
     <div class="container">
-        <nav>
+        <nav class="card-nav">
             <ul>
-                <li class="{% if request.path == '/dashboard/' %}active{% endif %}"><a href="{% url 'dashboard' %}">Dashboard</a></li>
-                <li class="{% if request.path == '/income/' %}active{% endif %}"><a href="{% url 'income_list' %}">Income</a></li>
-                <li class="{% if request.path == '/investment/' %}active{% endif %}"><a href="{% url 'investment_list' %}">Investments</a></li>
-                <li class="{% if request.path == '/expenses/' %}active{% endif %}"><a href="{% url 'expense_list' %}">Expenses</a></li>
-                <li class="{% if request.path == '/debt/' %}active{% endif %}"><a href="{% url 'debt_list' %}">Debts</a></li>
-                <li class="{% if request.path == '/savings/' %}active{% endif %}"><a href="{% url 'savings_list' %}">Savings</a></li>
-                <li class="{% if request.path == '/goals/' %}active{% endif %}"><a href="{% url 'goals_list' %}">Goals</a></li>
+                <li>
+                    <a href="{% url 'dashboard' %}" class="nav-card {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'income_list' %}" class="nav-card {% if request.resolver_match.url_name == 'income_list' %}active{% endif %}">
+                        Income
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'investment_list' %}" class="nav-card {% if request.resolver_match.url_name == 'investment_list' %}active{% endif %}">
+                        Investments
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'expense_list' %}" class="nav-card {% if request.resolver_match.url_name == 'expense_list' %}active{% endif %}">
+                        Expenses
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'debt_list' %}" class="nav-card {% if request.resolver_match.url_name == 'debt_list' %}active{% endif %}">
+                        Debts
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'savings_list' %}" class="nav-card {% if request.resolver_match.url_name == 'savings_list' %}active{% endif %}">
+                        Savings
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'goals_list' %}" class="nav-card {% if request.resolver_match.url_name == 'goals_list' %}active{% endif %}">
+                        Goals
+                    </a>
+                </li>
             </ul>
         </nav>
 
@@ -51,7 +79,7 @@
     </div>
 
     <footer>
-        &copy; {{ year }} Finance Manager. All rights reserved.
+        &copy; {{ current_year }} Finance Manager. All rights reserved.
     </footer>
 </body>
 </html>
