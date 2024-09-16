@@ -21,10 +21,10 @@ header {
     width: 100%;
     top: 0;
     left: 0;
-    z-index: 1000; /* Ensures the header is on top of other elements */
+    z-index: 1000;
     display: flex;
-    justify-content: space-between; /* Space between header items */
-    align-items: center; /* Center items vertically */
+    justify-content: space-between;
+    align-items: center;
 }
 
 /* Header Content Styles */
@@ -41,11 +41,6 @@ header {
 
 .header-content .user-info,
 .header-content .auth-links {
-    display: flex;
-    align-items: center;
-}
-
-.user-info {
     display: flex;
     align-items: center;
 }
@@ -89,7 +84,7 @@ footer {
     width: 100%;
     bottom: 0;
     left: 0;
-    z-index: 1000; /* Ensure the footer is on top of the content */
+    z-index: 1000;
 }
 
 /* Navigation Styles */
@@ -97,13 +92,13 @@ nav {
     width: 200px;
     background-color: #00509E; /* Light Blue */
     position: fixed;
-    top: 64px; /* Height of the header */
+    top: 64px;
     left: 0;
-    bottom: 0; /* Ensure it spans the full height */
+    bottom: 0;
     padding-top: 2rem;
-    padding-bottom: 2rem; /* Optional: Add bottom padding for aesthetics */
-    z-index: 999; /* Ensure the nav is below the header */
-    overflow-y: auto; /* Allow scrolling if content is too tall */
+    padding-bottom: 2rem;
+    z-index: 999;
+    overflow-y: auto;
 }
 
 nav ul {
@@ -113,35 +108,35 @@ nav ul {
 }
 
 nav li {
-    margin-bottom: 1rem; /* Space between cards */
+    margin-bottom: 1rem;
 }
 
 .nav-card {
-    background-color: #007bff; /* Default blue shade */
+    background-color: #007bff; /* Default blue */
     color: #fff;
     text-align: center;
     padding: 1rem;
     border-radius: 8px;
     text-decoration: none;
-    display: block; /* Make the link act like a block element */
+    display: block;
     transition: background-color 0.3s ease, transform 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow for card effect */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .nav-card:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+    background-color: #0056b3;
     transform: scale(1.05);
 }
 
 .nav-card.active {
-    background-color: #003366; /* Darker blue for active state */
+    background-color: #003366;
     transform: scale(1.05);
 }
 
 /* Main Content Styles */
 .main-container {
-    margin-left: 200px; /* Adjusted to accommodate nav width */
-    padding: 24px; /* Padding for main content */
+    margin-left: 200px;
+    padding: 24px;
 }
 
 /* Dashboard Card Styles */
@@ -153,7 +148,7 @@ nav li {
 }
 
 .card {
-    background-color: #007bff; /* Default blue shade */
+    background-color: #007bff;
     color: #fff;
     padding: 1rem;
     border-radius: 8px;
@@ -165,19 +160,19 @@ nav li {
 }
 
 .card-blue {
-    background-color: #007bff; /* Blue */
+    background-color: #007bff;
 }
 
 .card-light-blue {
-    background-color: #66b2ff; /* Light Blue */
+    background-color: #66b2ff;
 }
 
 .card-dark-blue {
-    background-color: #004080; /* Dark Blue */
+    background-color: #004080;
 }
 
 .card-mid-blue {
-    background-color: #3399ff; /* Medium Blue */
+    background-color: #3399ff;
 }
 
 .card h3 {
@@ -185,7 +180,7 @@ nav li {
 }
 
 .card:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+    background-color: #0056b3;
     transform: scale(1.05);
 }
 
@@ -197,73 +192,32 @@ nav li {
 }
 
 /* Financial Summary Table Styles */
-.financial-summary table, .budget-recommendations table, .goals-section table {
+.financial-summary table, .goals-section table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
 }
 
 .financial-summary th, .financial-summary td,
-.budget-recommendations th, .budget-recommendations td,
 .goals-section th, .goals-section td {
     padding: 12px;
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
 
-.financial-summary th, .budget-recommendations th, .goals-section th {
+.financial-summary th, .goals-section th {
     background-color: #f2f2f2;
     font-weight: bold;
 }
 
 .deficit td {
-    color: #f44336; /* Red for deficit */
+    color: #f44336;
     font-weight: bold;
 }
 
 .surplus td {
-    color: #4caf50; /* Green for surplus */
+    color: #4caf50;
     font-weight: bold;
-}
-
-/* Chart and Graph Styles */
-.chart-container {
-    max-width: 600px; /* Adjusted size */
-    margin: auto;
-    padding: 20px;
-}
-
-/* Standard Grid Styles for Tables */
-.table-container {
-    width: 100%;
-    overflow-x: auto; /* Allows horizontal scrolling if needed */
-    margin-bottom: 2rem; /* Space below the table */
-}
-
-.table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 1.5rem;
-}
-
-.table th, .table td {
-    padding: 0.75rem;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-.table th {
-    background-color: #f2f2f2;
-    font-weight: bold;
-}
-
-/* Optional: Zebra striping for rows */
-.table tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
-
-.table tr:hover {
-    background-color: #f1f1f1;
 }
 
 /* Progress Bar Styles */
@@ -277,11 +231,11 @@ nav li {
 
 .progress-bar {
     height: 100%;
-    width: 0; /* Default to 0%, to be set dynamically */
+    width: 0;
     background-color: #4caf50;
     border-radius: 10px;
     text-align: center;
-    line-height: 20px; /* Center text vertically */
+    line-height: 20px;
     color: white;
 }
 
@@ -296,7 +250,7 @@ nav li {
 }
 
 .form-group {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.5rem; /* Spacing between input fields */
 }
 
 .form-group label {
@@ -328,4 +282,49 @@ nav li {
 
 .form-group button:hover {
     background-color: #0056b3;
+}
+
+/* Table Styling */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.table th, .table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    nav {
+        width: 100%;
+        position: relative;
+        top: auto;
+        bottom: auto;
+    }
+
+    .main-container {
+        margin-left: 0;
+        padding: 16px;
+    }
+
+    .card-container {
+        flex-direction: column;
+    }
 }

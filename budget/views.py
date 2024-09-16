@@ -1,5 +1,8 @@
+import calendar
+import datetime
 import logging
-from dateutil.relativedelta import relativedelta
+from goals.views import calculate_total_goals, calculate_remaining_goals
+
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -7,6 +10,7 @@ from django.core.paginator import Paginator
 from django.db.models import Sum
 from django.shortcuts import get_object_or_404, render, redirect
 from django.utils import timezone
+
 from debt.models import Debt
 from goals.models import Goals
 from income.models import UserProfile, Income
@@ -21,53 +25,46 @@ logger = logging.getLogger(__name__)
 def dashboard(request):
     try:
         now = timezone.now()
-        start_of_month = now.replace(day=1)
-        end_of_month = start_of_month + relativedelta(months=1, days=-1)
+        start_of_month = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+        end_of_month = (start_of_month + timezone.timedelta(days=31)).replace(day=1) - timezone.timedelta(seconds=1)
 
         user_profile = UserProfile.objects.get(user=request.user)
 
-        # Query for financial metrics
-        total_income = Income.objects.filter(user=request.user, date__range=(start_of_month, end_of_month)) \
-                           .aggregate(total=Sum('amount'))['total'] or 0
-        total_investments = Investment.objects.filter(user=request.user, date__range=(start_of_month, end_of_month)) \
-                                .aggregate(total=Sum('current_value'))['total'] or 0
-        total_expenses = Expense.objects.filter(user=request.user, date__range=(start_of_month, end_of_month)) \
-                             .aggregate(total=Sum('amount'))['total'] or 0
-        total_debts = Debt.objects.filter(user=request.user, due_date__range=(start_of_month, end_of_month)) \
-                          .aggregate(total=Sum('amount'))['total'] or 0
-        total_savings = Saving.objects.filter(user=request.user, start_date__range=(start_of_month, end_of_month)) \
-                            .aggregate(total=Sum('current_amount'))['total'] or 0
+        # Query for financial metrics (monthly)
+        metrics = {
+            'total_income': Income.objects.filter(user=request.user, date__range=(start_of_month, end_of_month)).aggregate(total=Sum('amount'))['total'] or 0,
+            'total_investments': Investment.objects.filter(user=request.user, date__range=(start_of_month, end_of_month)).aggregate(total=Sum('current_value'))['total'] or 0,
+            'total_expenses': Expense.objects.filter(user=request.user, date__range=(start_of_month, end_of_month)).aggregate(total=Sum('amount'))['total'] or 0,
+            'total_debts': Debt.objects.filter(user=request.user, due_date__range=(start_of_month, end_of_month)).aggregate(total=Sum('amount'))['total'] or 0,
+            'total_savings': Saving.objects.filter(user=request.user, start_date__range=(start_of_month, end_of_month)).aggregate(total=Sum('current_amount'))['total'] or 0,
+        }
 
         # Calculate budget recommendations
-        needs_budget = user_profile.income * user_profile.needs_percentage / 100
-        wants_budget = user_profile.income * user_profile.wants_percentage / 100
-        savings_budget = user_profile.income * user_profile.savings_percentage / 100
+        income = user_profile.income
+        needs_budget = income * user_profile.needs_percentage / 100
+        wants_budget = income * user_profile.wants_percentage / 100
+        savings_budget = income * user_profile.savings_percentage / 100
 
         # Calculate financial standing
-        total_spent = total_expenses + total_debts
-        financial_standing = total_income - total_spent
+        total_spent = metrics['total_expenses'] + metrics['total_debts']
+        financial_standing = metrics['total_income'] - total_spent
         is_deficit = financial_standing < 0
         deficit_amount = abs(financial_standing) if is_deficit else 0
 
-        # Calculate remaining goals if needed
-        total_goals_target = Goals.objects.filter(user=request.user).aggregate(total=Sum('target_amount'))['total'] or 0
-        remaining_goals = total_goals_target - total_savings
+        # Calculate total and remaining goals (long-term)
+        total_goals_target = calculate_total_goals(request.user)
+        remaining_goals = calculate_remaining_goals(request.user, metrics['total_savings'])
 
         context = {
-            'total_income': total_income,
-            'total_investments': total_investments,
-            'total_expenses': total_expenses,
-            'total_debts': total_debts,
-            'total_savings': total_savings,
+            **metrics,
             'goals': Goals.objects.filter(user=request.user),
-            'start_of_month': start_of_month,
-            'end_of_month': end_of_month,
             'needs_budget': needs_budget,
             'wants_budget': wants_budget,
             'savings_budget': savings_budget,
             'financial_standing': financial_standing,
             'is_deficit': is_deficit,
             'deficit_amount': deficit_amount,
+            'total_goals_target': total_goals_target,
             'remaining_goals': remaining_goals,
         }
 
@@ -75,13 +72,12 @@ def dashboard(request):
 
     except UserProfile.DoesNotExist:
         messages.error(request, "UserProfile does not exist for the current user.")
-        logger.error("Error in dashboard view: UserProfile matching query does not exist.")
         return redirect('profile_setup')
 
     except Exception as e:
         messages.error(request, f"Error loading dashboard: {str(e)}")
-        logger.error(f"Error in dashboard view: {str(e)}")
         return render(request, 'budget/dashboard.html', {})
+
 
 
 def signup(request):
@@ -102,6 +98,18 @@ def signup(request):
     return render(request, 'registration/signup.html', {'form': form})
 
 
+
+
+def get_start_and_end_of_month(year, month):
+    # Start of the month
+    start_of_month = datetime.datetime(year, month, 1)
+
+    # Last day of the month
+    last_day = calendar.monthrange(year, month)[1]
+    end_of_month = datetime.datetime(year, month, last_day, 23, 59, 59)
+
+    return start_of_month, end_of_month
+
 @login_required
 def expense_list(request):
     try:
@@ -109,12 +117,15 @@ def expense_list(request):
         year = int(request.GET.get('year', now.year))
         month = int(request.GET.get('month', now.month))
 
-        start_of_month = timezone.datetime(year, month, 1).replace(tzinfo=timezone.get_current_timezone())
-        end_of_month = start_of_month + relativedelta(months=1, days=-1)
+        start_of_month, end_of_month = get_start_and_end_of_month(year, month)
+
+        # Make datetime objects timezone-aware if necessary
+        start_of_month = timezone.make_aware(start_of_month)
+        end_of_month = timezone.make_aware(end_of_month)
 
         expenses = Expense.objects.filter(user=request.user, date__range=(start_of_month, end_of_month))
 
-        paginator = Paginator(expenses, 10)  # Show 10 expenses per page.
+        paginator = Paginator(expenses, 10)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
 
@@ -150,7 +161,6 @@ def add_expense(request):
         form = ExpenseForm(user=request.user)
     return render(request, 'budget/add_expense.html', {'form': form})
 
-
 @login_required
 def update_expense(request, pk):
     expense = get_object_or_404(Expense, pk=pk, user=request.user)
@@ -164,7 +174,6 @@ def update_expense(request, pk):
         form = ExpenseForm(instance=expense, user=request.user)
     return render(request, 'budget/update_expense.html', {'form': form})
 
-
 @login_required
 def delete_expense(request, pk):
     expense = get_object_or_404(Expense, pk=pk, user=request.user)
@@ -176,7 +185,6 @@ def delete_expense(request, pk):
 
 def home(request):
     return render(request, 'home.html')
-
 
 def about(request):
     return render(request, 'about.html')

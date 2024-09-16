@@ -1,16 +1,25 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.decorators import login_required
-from django.utils import timezone
 from dateutil.relativedelta import relativedelta
 from django.contrib import messages
-from .models import Goals
-from .form import GoalForm
-from django.shortcuts import render
-from django.utils import timezone
-from dateutil.relativedelta import relativedelta
-from .models import Goals
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import render
+from django.utils import timezone
+
+from .form import GoalForm
+from .models import Goals
+from django.db.models import Sum
+
+def calculate_total_goals(user):
+    """Calculate total target amount for all goals for the current user."""
+    total_goals_target = Goals.objects.filter(user=user).aggregate(Sum('target_amount'))['target_amount__sum'] or 0
+    return total_goals_target
+
+def calculate_remaining_goals(user, total_savings):
+    """Calculate the remaining amount to reach all goals based on the current savings."""
+    total_goals_target = calculate_total_goals(user)
+    remaining_goals = total_goals_target - total_savings
+    return remaining_goals
 
 
 @login_required

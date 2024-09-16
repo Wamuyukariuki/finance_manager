@@ -1,5 +1,3 @@
-<!-- add_expense.html -->
-
 {% extends 'base.html' %}
 {% block title %}Add Expense{% endblock %}
 
@@ -10,7 +8,6 @@
 
         <form method="post">
             {% csrf_token %}
-
             <div style="margin-bottom: 15px;">
                 {{ form.category.label_tag }} {{ form.category }}
             </div>

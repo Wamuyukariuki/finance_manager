@@ -30,52 +30,17 @@
         </a>
     </div>
 
-    <div class="financial-summary">
-        <h2>Financial Summary for {{ start_of_month|date:"F Y" }}</h2>
-        <table>
-            <tbody>
-                <tr>
-                    <th>Financial Standing</th>
-                    <td>KES {{ financial_standing }}</td>
-                </tr>
-                {% if is_deficit %}
-                <tr>
-                    <th>Deficit Amount</th>
-                    <td>KES {{ deficit_amount }}</td>
-                </tr>
-                {% endif %}
-            </tbody>
-        </table>
-    </div>
+    <div class="financial-status">
+        <h2>Financial Summary</h2>
 
-    <div class="goals-section">
-        <h3>Goals</h3>
-        {% if goals %}
-            <table>
-                <thead>
-                    <tr>
-                        <th>Goal Name</th>
-                        <th>Target Amount</th>
-                        <th>Current Amount</th>
-                        <th>Due Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for goal in goals %}
-                        <tr>
-                            <td>{{ goal.name }}</td>
-                            <td>KES {{ goal.target_amount }}</td>
-                            <td>KES {{ goal.current_amount }}</td>
-                            <td>{{ goal.due_date }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <h3>Goal Progress</h3>
+        <p>Total Goals Target: KES {{ total_goals_target }}</p>
+        <p>Remaining Amount to Reach Goals: KES {{ remaining_goals }}</p>
+
+        {% if is_deficit %}
+        <p style="color: red;">You are running a deficit of KES {{ deficit_amount }}</p>
         {% else %}
-            <p>No goals set.</p>
-        {% endif %}
-        {% if remaining_goals > 0 %}
-        <p>You need KES {{ remaining_goals }} more to reach all your goals.</p>
+        <p>Your financial standing is {{ financial_standing }}</p>
         {% endif %}
     </div>
 </div>

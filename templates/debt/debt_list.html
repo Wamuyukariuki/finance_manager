@@ -1,3 +1,4 @@
+<!-- debt_list.html -->
 {% extends 'base.html' %}
 
 {% block title %}Debt List{% endblock %}
@@ -23,7 +24,7 @@
                             <td>{{ debt.due_date }}</td>
                             <td>{{ debt.description }}</td>
                             <td>
-                                <a href="{% url 'update_debt' debt.pk %}" class="btn btn-warning btn-sm">Edit</a> |
+                                <a href="{% url 'edit_debt' debt.pk %}" class="btn btn-warning btn-sm">Edit</a> |
                                 <a href="{% url 'delete_debt' debt.pk %}" class="btn btn-danger btn-sm">Delete</a>
                             </td>
                         </tr>

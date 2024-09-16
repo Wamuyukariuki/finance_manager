@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
 from django.shortcuts import render, redirect, get_object_or_404
@@ -5,7 +6,6 @@ from .form import IncomeForm, UserProfileForm
 from .models import Income, UserProfile
 
 
-@login_required
 def add_income(request):
     if request.method == 'POST':
         form = IncomeForm(request.POST)
@@ -13,11 +13,13 @@ def add_income(request):
             income = form.save(commit=False)
             income.user = request.user
             income.save()
+            messages.success(request, 'Income added successfully!')
             return redirect('income_list')
+        else:
+            messages.error(request, 'There was an error adding the income.')
     else:
         form = IncomeForm()
     return render(request, 'income/add_income.html', {'form': form})
-
 
 @login_required
 def income_list(request):
