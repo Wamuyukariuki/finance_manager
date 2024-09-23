@@ -1,4 +1,4 @@
-/* Reset default margin and padding for all elements */
+/* General Styles */
 * {
     margin: 0;
     padding: 0;
@@ -8,26 +8,23 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
-    padding-top: 64px; /* Space for the fixed header */
-    padding-bottom: 64px; /* Space for the fixed footer */
+    padding: 65px 0;
 }
 
 /* Header Styles */
 header {
-    background-color: #003366; /* Dark Blue */
+    background-color: #663300;
     color: #fff;
     padding: 1rem;
     position: fixed;
     width: 100%;
     top: 0;
-    left: 0;
     z-index: 1000;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-/* Header Content Styles */
 .header-content {
     display: flex;
     justify-content: space-between;
@@ -50,7 +47,7 @@ header {
 }
 
 .logout {
-    background-color: #ff4d4d; /* Red */
+    background-color: #663300;
     color: #fff;
     border: none;
     padding: 0.5rem 1rem;
@@ -60,7 +57,7 @@ header {
 }
 
 .logout:hover {
-    background-color: #cc0000; /* Darker red */
+    background-color: #4a2900;
 }
 
 .auth-links a {
@@ -76,35 +73,30 @@ header {
 
 /* Footer Styles */
 footer {
-    background-color: #003366; /* Dark Blue */
+    background-color: #663300;
     color: #fff;
     text-align: center;
     padding: 1rem;
     position: fixed;
     width: 100%;
     bottom: 0;
-    left: 0;
     z-index: 1000;
 }
 
 /* Navigation Styles */
 nav {
-    width: 200px;
-    background-color: #00509E; /* Light Blue */
+    width: 180px;
+    background-color: #80370d;
     position: fixed;
     top: 64px;
-    left: 0;
     bottom: 0;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
+    padding: 2rem 0;
     z-index: 999;
     overflow-y: auto;
 }
 
 nav ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
+    list-style: none;
 }
 
 nav li {
@@ -112,34 +104,39 @@ nav li {
 }
 
 .nav-card {
-    background-color: #007bff; /* Default blue */
+    background-color: #5e2208;
     color: #fff;
     text-align: center;
-    padding: 1rem;
-    border-radius: 8px;
+    padding: 0.75rem;
+    border-radius: 5px;
     text-decoration: none;
     display: block;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    transition: background-color 0.3s, transform 0.3s;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.nav-card:hover {
-    background-color: #0056b3;
-    transform: scale(1.05);
-}
-
+.nav-card:hover,
 .nav-card.active {
-    background-color: #003366;
+    background-color: #80370d;
     transform: scale(1.05);
 }
 
-/* Main Content Styles */
+/* General Layout */
 .main-container {
-    margin-left: 200px;
-    padding: 24px;
+    margin-left: 160px; /* Matches the width of the side navigation */
+    padding: 20px;
+    min-height: calc(100vh - 128px); /* Adjusts the height to account for the fixed header and footer */
 }
 
-/* Dashboard Card Styles */
+
+
+
+.dashboard-container {
+    margin-left: 180px;
+    padding: 20px;
+}
+
+/* Card Styles */
 .card-container {
     display: flex;
     flex-wrap: wrap;
@@ -148,183 +145,191 @@ nav li {
 }
 
 .card {
-    background-color: #007bff;
+    background-color: #5e2208;
     color: #fff;
     padding: 1rem;
     border-radius: 8px;
     text-align: center;
-    text-decoration: none;
     flex: 1;
     max-width: 200px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    transition: background-color 0.3s, transform 0.3s;
 }
 
-.card-blue {
-    background-color: #007bff;
-}
-
-.card-light-blue {
-    background-color: #66b2ff;
-}
-
-.card-dark-blue {
-    background-color: #004080;
-}
-
-.card-mid-blue {
-    background-color: #3399ff;
+.card:hover {
+    background-color: #4e2208;
+    transform: scale(1.05);
 }
 
 .card h3 {
     margin-bottom: 0.5rem;
 }
 
-.card:hover {
-    background-color: #0056b3;
-    transform: scale(1.05);
+/* Financial Status Styles */
+.financial-status {
+    background-color: #f4f4f4;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
 }
 
-/* Dashboard Container Styles */
-.dashboard-container {
-    max-width: 1000px;
-    margin: auto;
-    padding: 20px;
+.financial-status h2 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    color: #333;
 }
 
-/* Financial Summary Table Styles */
-.financial-summary table, .goals-section table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
+.financial-status h3 {
+    margin: 1.5rem 0 0.5rem;
+    font-size: 1.2rem;
+    color: #666;
 }
 
-.financial-summary th, .financial-summary td,
-.goals-section th, .goals-section td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-.financial-summary th, .goals-section th {
-    background-color: #f2f2f2;
+.financial-status .deficit {
+    color: #ff4d4d;
     font-weight: bold;
 }
 
-.deficit td {
-    color: #f44336;
+.financial-status .surplus {
+    color: #007bff;
     font-weight: bold;
 }
 
-.surplus td {
-    color: #4caf50;
-    font-weight: bold;
-}
-
-/* Progress Bar Styles */
+/* Progress Bar */
 .progress {
-    position: relative;
     height: 20px;
-    background-color: #e0e0e0;
+    background-color: #f4f4f4;
     border-radius: 10px;
     margin-bottom: 20px;
 }
 
 .progress-bar {
     height: 100%;
-    width: 0;
-    background-color: #4caf50;
+    background-color: #663300;
     border-radius: 10px;
     text-align: center;
     line-height: 20px;
     color: white;
 }
 
-/* Form Container Styles */
-.form-container {
-    max-width: 500px;
-    margin: 2rem auto;
-    padding: 2rem;
-    background-color: #fff;
+/* Download Button */
+.download-button {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    background-color: #663300;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.download-button:hover {
+    background-color: #4a2900;
+}
+
+.download-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+//* Style for all forms */
+.form-margin {
+    margin-left: 180px;
+}
+
+/* Form Card Styles */
+.form-card {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f8f2ec;
+    border: 1px solid #744133;
 }
 
-.form-group {
-    margin-bottom: 1.5rem; /* Spacing between input fields */
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
+/* Label styles for all forms */
+.form-label {
     font-weight: bold;
+    margin-bottom: 5px;
+    color: #744133;
 }
 
-.form-group input,
-.form-group select,
-.form-group textarea {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ccc;
+/* Enhanced form control styles */
+.form-control {
+    margin-top: 5px;
+    border: 1px solid #744133;
     border-radius: 4px;
-    font-size: 1rem;
+    padding: 10px;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    min-height: 40px;
 }
 
-.form-group button {
-    background-color: #007bff;
+
+/* Primary button styles */
+.btn-primary {
+    margin-top: 15px;
+    background-color: #744133;
+    border-color: #744133;
+    color: #ffffff;
+}
+
+/* Applying margin to forms */
+form {
+    margin-left: 100px; /* Ensure all forms have the left margin */
+}
+
+/* Card Styles - Optional if using cards for forms */
+.card {
+    background-color: #5e2208;
     color: #fff;
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 4px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto; /* Center the card if used */
 }
 
-.form-group button:hover {
-    background-color: #0056b3;
-}
 
-/* Table Styling */
-.table {
+/* Table Styles */
+.list-table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 20px;
+    margin-bottom: 2rem;
 }
 
-.table th, .table td {
-    padding: 0.75rem;
+.list-table th,
+.list-table td {
+    padding: 7px;
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
 
-.table th {
-    background-color: #f2f2f2;
+.list-table th {
+    background-color: #663300;
+    color: #fff;
     font-weight: bold;
 }
 
-.table tr:nth-child(even) {
+.list-table tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 
-.table tr:hover {
+.list-table tr:hover {
     background-color: #f1f1f1;
 }
 
+
 /* Responsive Styles */
 @media (max-width: 768px) {
-    nav {
-        width: 100%;
-        position: relative;
-        top: auto;
-        bottom: auto;
-    }
-
-    .main-container {
-        margin-left: 0;
+    .main-container,
+    .table-responsive {
+        margin-left: 0; /* Remove the margin on smaller screens when the nav might collapse */
         padding: 16px;
     }
-
-    .card-container {
-        flex-direction: column;
-    }
 }
+

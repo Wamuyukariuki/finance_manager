@@ -1,16 +1,16 @@
-from django.db.models import Sum
+import logging
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import Investment
-from .form import InvestmentForm
-import logging
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
+
+from .form import InvestmentForm
 from .models import Investment
+
+from django.contrib import messages
 
 # Configure logging
 logger = logging.getLogger(__name__)
+
 @login_required
 def add_investment(request):
     if request.method == 'POST':
@@ -19,27 +19,20 @@ def add_investment(request):
             investment = form.save(commit=False)
             investment.user = request.user
             investment.save()
-            return redirect('investment_list')  # Redirect to investment list after saving
+            messages.success(request, 'Investment added successfully!')
+            return redirect('investment_list')
     else:
         form = InvestmentForm()
 
     return render(request, 'investment/add_investment.html', {'form': form})
 
-
-
 @login_required
 def investment_list(request):
     try:
-        # Retrieve investments for the current user
         investments = Investment.objects.filter(user=request.user)
-
-        # Check if investments are retrieved correctly
         logger.debug(f"Number of investments: {investments.count()}")
 
-        # Calculate total investment value for the current user
         total_investment = investments.aggregate(Sum('current_value'))['current_value__sum'] or 0
-
-        # Log the total investment value
         logger.debug(f"Total investment value: {total_investment}")
 
         context = {
@@ -51,9 +44,8 @@ def investment_list(request):
 
     except Exception as e:
         logger.error(f"Error in investment_list view: {str(e)}")
-        return render(request, 'investment/investment_list.html',
-                      {'error': 'An error occurred while retrieving investments.'})
-
+        messages.error(request, 'An error occurred while retrieving investments.')
+        return render(request, 'investment/investment_list.html', {'investments': [], 'total_investment': 0})
 
 @login_required
 def update_investment(request, pk):
@@ -62,6 +54,7 @@ def update_investment(request, pk):
         form = InvestmentForm(request.POST, instance=investment)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Investment updated successfully!')
             return redirect('investment_list')
     else:
         form = InvestmentForm(instance=investment)
@@ -72,5 +65,6 @@ def delete_investment(request, pk):
     investment = get_object_or_404(Investment, pk=pk, user=request.user)
     if request.method == 'POST':
         investment.delete()
+        messages.success(request, 'Investment deleted successfully!')
         return redirect('investment_list')
     return render(request, 'investment/delete_investment.html', {'investment': investment})

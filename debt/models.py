@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+
+
 class Debt(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
@@ -13,3 +15,13 @@ class Debt(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - KES {self.amount}"
+
+    @property
+    def outstanding_balance(self):
+        """
+        Returns the outstanding balance on the debt.
+        """
+        if self.amount_paid:
+            return self.amount - self.amount_paid
+        return self.amount
+

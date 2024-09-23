@@ -4,28 +4,43 @@
 {% block content %}
 <div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
     <div class="w-100" style="max-width: 600px;">
-        <h2 class="text-center" style="margin-bottom: 20px;">Add Income</h2> <!-- Set margin-bottom explicitly -->
+        <h2 class="text-center mb-4">Add Income</h2>
 
         <form method="post">
             {% csrf_token %}
+            {{ form.non_field_errors }}
 
-            <div style="margin-bottom: 15px;"> <!-- Space between fields -->
-                {{ form.category.label_tag }} {{ form.category }} <!-- Category Field -->
-            </div>
-            <div style="margin-bottom: 15px;"> <!-- Space between fields -->
-                {{ form.income_source.label_tag }} {{ form.income_source }} <!-- Income Source Field -->
-            </div>
-            <div style="margin-bottom: 15px;"> <!-- Space between fields -->
-                {{ form.amount.label_tag }} {{ form.amount }} <!-- Amount Field -->
-            </div>
-            <div style="margin-bottom: 15px;"> <!-- Space between fields -->
-                {{ form.date.label_tag }} {{ form.date }} <!-- Date Field -->
-            </div>
-            <div style="margin-bottom: 20px;"> <!-- Space between fields -->
-                {{ form.description.label_tag }} {{ form.description }} <!-- Description Field -->
+            <!-- Category -->
+            <div class="mb-3">
+                <label for="{{ form.category.id_for_label }}" class="form-label">{{ form.category.label }}</label>
+                {{ form.category }}
             </div>
 
-            <button type="submit" class="btn btn-primary w-100" style="margin-top: 15px;">Add Income</button> <!-- Set margin-top explicitly -->
+            <!-- Income Source -->
+            <div class="mb-3">
+                <label for="{{ form.income_source.id_for_label }}" class="form-label">{{ form.income_source.label }}</label>
+                {{ form.income_source }}
+            </div>
+
+            <!-- Amount -->
+            <div class="mb-3">
+                <label for="{{ form.amount.id_for_label }}" class="form-label">{{ form.amount.label }}</label>
+                {{ form.amount }}
+            </div>
+
+            <!-- Date -->
+            <div class="mb-3">
+                <label for="{{ form.date.id_for_label }}" class="form-label">{{ form.date.label }}</label>
+                {{ form.date }}
+            </div>
+
+            <!-- Description -->
+            <div class="mb-4">
+                <label for="{{ form.description.id_for_label }}" class="form-label">{{ form.description.label }}</label>
+                {{ form.description }}
+            </div>
+
+            <button type="submit" class="btn btn-primary">Add Income</button>
         </form>
     </div>
 </div>

@@ -1,20 +1,38 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from dateutil.relativedelta import relativedelta  # Import relativedelta
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
+from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import render
 from django.utils import timezone
-from dateutil.relativedelta import relativedelta  # Import relativedelta
 
 from .form import DebtForm
 from .models import Debt
 
-def calculate_total_debts(user):
-    """Calculate total debts for the current user in the current month."""
+
+@login_required
+def debt_list(request):
     now = timezone.now()
     start_of_month = now.replace(day=1)
     end_of_month = start_of_month + relativedelta(months=1, days=-1)
 
-    total_debts = Debt.objects.filter(user=user, due_date__range=(start_of_month, end_of_month)).aggregate(Sum('amount'))['amount__sum'] or 0
-    return total_debts
+    # Filter debts for the current month
+    debts = Debt.objects.filter(user=request.user, due_date__gte=start_of_month, due_date__lte=end_of_month)
+
+    # Calculate total debts and total paid
+    total_debts = debts.aggregate(Sum('amount'))['amount__sum'] or 0
+    total_amount_paid = debts.aggregate(Sum('amount_paid'))['amount_paid__sum'] or 0
+
+    # Calculate total outstanding balance
+    total_outstanding_balance = sum(debt.outstanding_balance for debt in debts)
+
+    context = {
+        'debts': debts,
+        'total_debts': total_debts,
+        'total_amount_paid': total_amount_paid,
+        'total_outstanding_balance': total_outstanding_balance,
+    }
+    return render(request, 'debt/debt_list.html', context)
+
 
 @login_required
 def add_debt(request):
@@ -29,24 +47,6 @@ def add_debt(request):
         form = DebtForm()
     return render(request, 'debt/debt_form.html', {'form': form})
 
-@login_required
-def debt_list(request):
-    # Get current date and the start and end of the current month
-    now = timezone.now()
-    start_of_month = now.replace(day=1)
-    end_of_month = start_of_month + relativedelta(months=1, days=-1)
-
-    # Filter debts for the current month using 'due_date'
-    debts = Debt.objects.filter(user=request.user, due_date__gte=start_of_month, due_date__lte=end_of_month)
-
-    # Calculate total debts for the current month
-    total_debts = debts.aggregate(Sum('amount'))['amount__sum'] or 0
-
-    context = {
-        'debts': debts,
-        'total_debts': total_debts,
-    }
-    return render(request, 'debt/debt_list.html', context)
 
 @login_required
 def edit_debt(request, pk):

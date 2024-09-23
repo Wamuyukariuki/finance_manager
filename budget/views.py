@@ -1,6 +1,14 @@
 import calendar
-import datetime
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
+
+
 import logging
+
+from django.http import HttpResponse
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas
+
 from goals.views import calculate_total_goals, calculate_remaining_goals
 
 from django.contrib import messages
@@ -79,6 +87,94 @@ def dashboard(request):
         return render(request, 'budget/dashboard.html', {})
 
 
+@login_required
+def download_report(request, year, month):
+    # Create the response object for the PDF
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="financial_report_{year}_{month}.pdf"'
+
+    # Create the PDF object
+    p = canvas.Canvas(response, pagesize=A4)
+    width, height = A4
+
+    # Title and User info
+    p.setFont("Helvetica-Bold", 16)
+    p.drawString(100, 800, "Financial Report")
+    p.setFont("Helvetica", 12)
+    p.drawString(100, 780, f"User: {request.user.username}")
+    p.drawString(100, 765, f"Month: {month} Year: {year}")
+
+    # Initialize Y position for text placement
+    y_position = 740
+    line_height = 15
+
+    # Determine the start and end of the specified month
+    start_of_month = timezone.datetime(year, month, 1)
+    end_of_month = start_of_month + relativedelta(months=1, days=-1)
+
+    # Fetch user data for the specified month
+    expenses = Expense.objects.filter(user=request.user, date__range=[start_of_month, end_of_month])
+    debts = Debt.objects.filter(user=request.user, due_date__range=[start_of_month, end_of_month])
+    savings = Saving.objects.filter(user=request.user)  # Filtered without date range
+    goals = Goals.objects.filter(user=request.user)  # Filtered without date range
+
+    def check_page_overflow(p, y_position):
+        if y_position <= 50:
+            p.showPage()
+            p.setFont("Helvetica", 12)
+            return 800
+        return y_position
+
+    # Display Expenses Section
+    p.setFont("Helvetica-Bold", 14)
+    p.drawString(100, y_position, "Expenses:")
+    y_position -= line_height
+    p.setFont("Helvetica", 12)
+    for expense in expenses:
+        p.drawString(100, y_position, f"- {expense.category}: KES {expense.amount:,.2f}")
+        y_position -= line_height
+        y_position = check_page_overflow(p, y_position)
+
+    # Display Debts Section
+    y_position -= 10
+    p.setFont("Helvetica-Bold", 14)
+    p.drawString(100, y_position, "Debts:")
+    y_position -= line_height
+    p.setFont("Helvetica", 12)
+    for debt in debts:
+        p.drawString(100, y_position, f"- {debt.description}: KES {debt.amount:,.2f}")
+        y_position -= line_height
+        y_position = check_page_overflow(p, y_position)
+
+    # Display Savings Section
+    y_position -= 10
+    p.setFont("Helvetica-Bold", 14)
+    p.drawString(100, y_position, "Savings:")
+    y_position -= line_height
+    p.setFont("Helvetica", 12)
+    for saving in savings:
+        p.drawString(100, y_position, f"- {saving.name}: KES {saving.current_amount:,.2f}")
+        y_position -= line_height
+        y_position = check_page_overflow(p, y_position)
+
+    # Display Goals Section
+    y_position -= 10
+    p.setFont("Helvetica-Bold", 14)
+    p.drawString(100, y_position, "Goals:")
+    y_position -= line_height
+    p.setFont("Helvetica", 12)
+    for goal in goals:
+        p.drawString(100, y_position, f"- {goal.name}: Target KES {goal.target_amount:,.2f}")
+        y_position -= line_height
+        y_position = check_page_overflow(p, y_position)
+
+    # Finalize the PDF
+    p.showPage()
+    p.save()
+
+    return response
+
+
 
 def signup(request):
     if request.method == 'POST':
@@ -100,15 +196,8 @@ def signup(request):
 
 
 
-def get_start_and_end_of_month(year, month):
-    # Start of the month
-    start_of_month = datetime.datetime(year, month, 1)
 
-    # Last day of the month
-    last_day = calendar.monthrange(year, month)[1]
-    end_of_month = datetime.datetime(year, month, last_day, 23, 59, 59)
-
-    return start_of_month, end_of_month
+logger = logging.getLogger(__name__)
 
 @login_required
 def expense_list(request):
@@ -119,12 +208,10 @@ def expense_list(request):
 
         start_of_month, end_of_month = get_start_and_end_of_month(year, month)
 
-        # Make datetime objects timezone-aware if necessary
         start_of_month = timezone.make_aware(start_of_month)
         end_of_month = timezone.make_aware(end_of_month)
 
         expenses = Expense.objects.filter(user=request.user, date__range=(start_of_month, end_of_month))
-
         paginator = Paginator(expenses, 10)
         page_number = request.GET.get('page')
         page_obj = paginator.get_page(page_number)
@@ -137,12 +224,19 @@ def expense_list(request):
             'year': year,
             'month': month,
         }
+
         return render(request, 'budget/expense_list.html', context)
 
     except Exception as e:
-        messages.error(request, f"Error loading expenses: {str(e)}")
-        logger.error(f"Error in expense_list view: {str(e)}")
+        logger.error(f"Error loading expenses: {str(e)}")
+        messages.error(request, "An error occurred while loading expenses. Please try again later.")
         return render(request, 'budget/expense_list.html', {'error': 'Unable to load expenses.'})
+
+def get_start_and_end_of_month(year, month):
+    start_of_month = datetime(year, month, 1)
+    last_day = calendar.monthrange(year, month)[1]
+    end_of_month = datetime(year, month, last_day, 23, 59, 59)
+    return start_of_month, end_of_month
 
 
 @login_required
@@ -161,6 +255,7 @@ def add_expense(request):
         form = ExpenseForm(user=request.user)
     return render(request, 'budget/add_expense.html', {'form': form})
 
+
 @login_required
 def update_expense(request, pk):
     expense = get_object_or_404(Expense, pk=pk, user=request.user)
@@ -173,6 +268,7 @@ def update_expense(request, pk):
     else:
         form = ExpenseForm(instance=expense, user=request.user)
     return render(request, 'budget/update_expense.html', {'form': form})
+
 
 @login_required
 def delete_expense(request, pk):

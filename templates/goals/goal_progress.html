@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Goals Progress{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="text-center mb-4">Goals Progress</h2>
+
+    {% if goals %}
+        <canvas id="goalsChart" width="400" height="200"></canvas>
+    {% else %}
+        <p class="text-center">No goals available to display.</p>
+    {% endif %}
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var ctx = document.getElementById('goalsChart').getContext('2d');
+        var goalsChart = new Chart(ctx, {
+            type: 'line',  // Can change to 'bar', 'pie', etc.
+            data: {
+                labels: [{% for goal in goals %}"{{ goal.name }}",{% endfor %}],
+                datasets: [{
+                    label: 'Amount Saved',
+                    data: [{% for goal in goals %}{{ goal.amount_saved }},{% endfor %}],
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return 'Amount Saved: ' + tooltipItem.raw;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</div>
+{% endblock %}

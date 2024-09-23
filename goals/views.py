@@ -2,10 +2,8 @@ from dateutil.relativedelta import relativedelta
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.shortcuts import get_object_or_404, redirect
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
-
 from .form import GoalForm
 from .models import Goals
 from django.db.models import Sum
@@ -21,14 +19,12 @@ def calculate_remaining_goals(user, total_savings):
     remaining_goals = total_goals_target - total_savings
     return remaining_goals
 
-
 @login_required
 def goals_list(request):
     now = timezone.now()
     start_of_month = now.replace(day=1)
     end_of_month = start_of_month + relativedelta(months=1, days=-1)
 
-    # Order the queryset by 'created_at' to ensure consistent pagination
     goals_list = Goals.objects.filter(
         user=request.user,
         created_at__gte=start_of_month,
@@ -39,14 +35,22 @@ def goals_list(request):
     page_number = request.GET.get('page')
     goals = paginator.get_page(page_number)
 
+    # Optimize queries by storing results in variables
+    total_target_amount = goals_list.aggregate(Sum('target_amount'))['target_amount__sum'] or 0
+    total_amount_saved = goals_list.aggregate(Sum('amount_saved'))['amount_saved__sum'] or 0
+
     context = {
         'goals': goals,
         'start_of_month': start_of_month,
         'end_of_month': end_of_month,
+        'total_target_amount': total_target_amount,
+        'total_amount_saved': total_amount_saved,
     }
 
-    return render(request, 'goals/goals_list.html', context)
+    if not goals_list.exists():
+        messages.info(request, 'No goals found for this month.')
 
+    return render(request, 'goals/goals_list.html', context)
 
 @login_required
 def goal_create(request):
@@ -64,7 +68,6 @@ def goal_create(request):
         form = GoalForm()
     return render(request, 'goals/goal_form.html', {'form': form})
 
-
 @login_required
 def goal_edit(request, id):
     goal = get_object_or_404(Goals, id=id)
@@ -79,7 +82,6 @@ def goal_edit(request, id):
     else:
         form = GoalForm(instance=goal)
     return render(request, 'goals/goal_form.html', {'form': form})
-
 
 @login_required
 def goal_delete(request, id):

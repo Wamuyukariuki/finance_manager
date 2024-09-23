@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.shortcuts import redirect
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
+
 from budget import views as budget_views
 
 urlpatterns = [
@@ -16,5 +17,6 @@ urlpatterns = [
     path('goals/', include('goals.urls')),
     path('income/', include('income.urls')),
     path('investment/', include('investment.urls')),
+
     path('', lambda request: redirect('login', permanent=True)),  # Redirect root to login
 ]

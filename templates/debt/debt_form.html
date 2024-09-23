@@ -3,28 +3,53 @@
 {% block title %}Add Debt{% endblock %}
 
 {% block content %}
-<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
-    <div class="w-100" style="max-width: 600px;">
-        <h2 class="text-center" style="margin-bottom: 20px;">Add Debt</h2> <!-- Set margin-bottom explicitly -->
-
-        <form method="post">
-            {% csrf_token %}
-
-            <div style="margin-bottom: 15px;"> <!-- Space between fields -->
-                {{ form.amount.label_tag }} {{ form.amount }} <!-- Amount Field -->
-            </div>
-            <div style="margin-bottom: 15px;"> <!-- Space between fields -->
-                {{ form.due_date.label_tag }} {{ form.due_date }} <!-- Due Date Field -->
-            </div>
-            <div style="margin-bottom: 15px;"> <!-- Space between fields -->
-                {{ form.description.label_tag }} {{ form.description }} <!-- Description Field -->
-            </div>
-            <div style="margin-bottom: 20px;"> <!-- Space between fields -->
-                <!-- Any additional fields or notes can go here -->
-            </div>
-
-            <button type="submit" class="btn btn-primary w-100" style="margin-top: 15px;">Save Debt</button> <!-- Set margin-top explicitly -->
-        </form>
+<div class="main-container">
+    <h1>Debt List</h1>
+    <a href="{% url 'add_debt' %}" class="btn add-button">Add Debt</a>
+    <div class="table-responsive">
+        <table class="list-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Debt Type</th>
+                    <th>Amount (KES)</th>
+                    <th>Amount Paid (KES)</th>
+                    <th>Outstanding Balance (KES)</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for debt in debts %}
+                <tr>
+                    <td>{{ debt.created_at|date:"Y-m-d" }}</td>
+                    <td>{{ debt.description }}</td>
+                    <td>{{ debt.amount }}</td>
+                    <td>{{ debt.amount_paid|default:"0.00" }}</td>
+                    <td>{{ debt.outstanding_balance }}</td>
+                    <td>{% if debt.is_paid %}Paid{% else %}Unpaid{% endif %}</td>
+                    <td>
+                        <a href="{% url 'edit_debt' debt.id %}" class="btn edit-button">Edit</a>
+                        <a href="{% url 'delete_debt' debt.id %}" class="btn delete-button" onclick="return confirm('Are you sure you want to delete this debt?');">Delete</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7">No debt records available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2"><strong>Total:</strong></td>
+                    <td><strong>{{ total_debts }}</strong></td>
+                    <td><strong>{{ total_amount_paid }}</strong></td>
+                    <td><strong>{{ total_outstanding_balance }}</strong></td>
+                    <td colspan="2"></td> <!-- Empty columns for status and actions -->
+                </tr>
+            </tfoot>
+        </table>
     </div>
 </div>
+
 {% endblock %}

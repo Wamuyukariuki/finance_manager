@@ -1,34 +1,48 @@
 {% extends 'base.html' %}
 
-{% block title %}My Goals{% endblock %}
+{% block title %}Goals List{% endblock %}
 
 {% block content %}
-<h2>My Goals</h2>
-<a href="{% url 'goal_create' %}">Create New Goal</a>
+<div class="container d-flex flex-column align-items-center">
+    <h2 class="mb-4">Goals List</h2>
+    <a href="{% url 'goal_create' %}" class="btn btn-primary mb-4">Add New Goal</a>
 
-<div class="table-container">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Current Amount</th>
-                <th>Target Amount</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for goal in goals %}
-            <tr>
-                <td><strong>{{ goal.name }}</strong></td>
-                <td>KES {{ goal.current_amount }}</td>
-                <td>KES {{ goal.target_amount }}</td>
-                <td>
-                    <a href="{% url 'goal_edit' goal.id %}">Edit</a> |
-                    <a href="{% url 'goal_delete' goal.id %}" onclick="return confirm('Are you sure you want to delete this goal?');">Delete</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="table-responsive w-100" style="max-width: 1000px;">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Target Amount</th>
+                    <th>Amount Saved</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for goal in goals %}
+                <tr>
+                    <td>{{ goal.name }}</td>
+                    <td>{{ goal.target_amount }}</td>
+                    <td>{{ goal.current_amount }}</td>
+                    <td>
+                        <a href="{% url 'goal_edit' goal.id %}" class="btn btn-warning btn-sm">Edit</a>
+                        <a href="{% url 'goal_delete' goal.id %}" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="text-center">No goals available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td><strong>Total:</strong></td>
+                    <td>{{ total_target_amount }}</td>
+                    <td>{{ total_current_amount }}</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
 </div>
 {% endblock %}
