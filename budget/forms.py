@@ -3,19 +3,19 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Expense, ExpenseCategory
 
+
 class ExpenseForm(forms.ModelForm):
     class Meta:
         model = Expense
         fields = ['category', 'amount', 'date', 'description']
-        widgets = {
-            'category': forms.Select(choices=[(c.id, c.name) for c in ExpenseCategory.objects.all()]),
-        }
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
         if user:
+            # Dynamically set the queryset for the category field
             self.fields['category'].queryset = ExpenseCategory.objects.all()
+        # Update widget attributes
         self.fields['category'].widget.attrs.update({'class': 'form-control'})
         self.fields['date'].widget = forms.DateInput(attrs={'type': 'date', 'class': 'form-control'})
         self.fields['amount'].widget.attrs.update({'class': 'form-control'})

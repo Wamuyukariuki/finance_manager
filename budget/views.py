@@ -194,11 +194,6 @@ def signup(request):
     return render(request, 'registration/signup.html', {'form': form})
 
 
-
-
-
-logger = logging.getLogger(__name__)
-
 @login_required
 def expense_list(request):
     try:
@@ -207,9 +202,6 @@ def expense_list(request):
         month = int(request.GET.get('month', now.month))
 
         start_of_month, end_of_month = get_start_and_end_of_month(year, month)
-
-        start_of_month = timezone.make_aware(start_of_month)
-        end_of_month = timezone.make_aware(end_of_month)
 
         expenses = Expense.objects.filter(user=request.user, date__range=(start_of_month, end_of_month))
         paginator = Paginator(expenses, 10)
@@ -233,9 +225,9 @@ def expense_list(request):
         return render(request, 'budget/expense_list.html', {'error': 'Unable to load expenses.'})
 
 def get_start_and_end_of_month(year, month):
-    start_of_month = datetime(year, month, 1)
+    start_of_month = timezone.make_aware(datetime(year, month, 1))
     last_day = calendar.monthrange(year, month)[1]
-    end_of_month = datetime(year, month, last_day, 23, 59, 59)
+    end_of_month = timezone.make_aware(datetime(year, month, last_day, 23, 59, 59))
     return start_of_month, end_of_month
 
 
@@ -245,14 +237,15 @@ def add_expense(request):
         form = ExpenseForm(request.POST, user=request.user)
         if form.is_valid():
             expense = form.save(commit=False)
-            expense.user = request.user
+            expense.user = request.user  # Associate the expense with the logged-in user
             expense.save()
             messages.success(request, 'Expense added successfully.')
-            return redirect('expense_list')
+            return redirect('expense_list')  # Redirect to the expense list
         else:
             messages.error(request, 'Error adding expense. Please check the form.')
     else:
-        form = ExpenseForm(user=request.user)
+        form = ExpenseForm(user=request.user)  # Initialize an empty form for GET requests
+
     return render(request, 'budget/add_expense.html', {'form': form})
 
 
@@ -265,10 +258,11 @@ def update_expense(request, pk):
             form.save()
             messages.success(request, 'Expense updated successfully.')
             return redirect('expense_list')
+        else:
+            messages.error(request, 'Error updating expense. Please check the form.')
     else:
         form = ExpenseForm(instance=expense, user=request.user)
     return render(request, 'budget/update_expense.html', {'form': form})
-
 
 @login_required
 def delete_expense(request, pk):

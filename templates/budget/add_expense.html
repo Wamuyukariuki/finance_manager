@@ -7,6 +7,10 @@
     <div class="w-100" style="max-width: 600px;">
         <h2 class="text-center mb-4">Add Expense</h2>
 
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+
         <form method="post">
             {% csrf_token %}
             {{ form.non_field_errors }}
@@ -15,27 +19,34 @@
             <div class="mb-3">
                 <label for="{{ form.category.id_for_label }}" class="form-label">{{ form.category.label }}</label>
                 {{ form.category }}
+                {{ form.category.errors }}
             </div>
 
             <!-- Amount -->
             <div class="mb-3">
                 <label for="{{ form.amount.id_for_label }}" class="form-label">{{ form.amount.label }}</label>
                 {{ form.amount }}
+                {{ form.amount.errors }}
             </div>
 
             <!-- Date -->
             <div class="mb-3">
                 <label for="{{ form.date.id_for_label }}" class="form-label">{{ form.date.label }}</label>
                 {{ form.date }}
+                {{ form.date.errors }}
             </div>
 
             <!-- Description -->
             <div class="mb-4">
                 <label for="{{ form.description.id_for_label }}" class="form-label">{{ form.description.label }}</label>
                 {{ form.description }}
+                {{ form.description.errors }}
             </div>
 
-            <button type="submit" class="btn btn-primary">Add Expense</button>
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-primary">Add Expense</button>
+                <a href="{% url 'expense_list' %}" class="btn btn-secondary">Cancel</a>
+            </div>
         </form>
     </div>
 </div>

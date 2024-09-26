@@ -6,7 +6,10 @@
 {% block content %}
 <div class="main-container">
     <h1>Debt List</h1>
-    <a href="{% url 'add_debt' %}" class="btn add-button">Add Debt</a>
+
+    <!-- Add Debt Button -->
+    <a href="{% url 'add_debt' %}" class="btn add-button mb-3">Add Debt</a>
+
     <div class="table-responsive">
         <table class="list-table">
             <thead>
@@ -15,7 +18,7 @@
                     <th>Debt Type</th>
                     <th>Amount (KES)</th>
                     <th>Amount Paid (KES)</th>
-                    <th>Outstanding Balance (KES)</th> <!-- Corrected heading -->
+                    <th>Outstanding Balance (KES)</th>
                     <th>Status</th>
                     <th>Actions</th>
                 </tr>
@@ -25,10 +28,12 @@
                 <tr>
                     <td>{{ debt.created_at|date:"Y-m-d" }}</td>
                     <td>{{ debt.description }}</td>
-                    <td>{{ debt.amount }}</td>
-                    <td>{{ debt.amount_paid|default:"0.00" }}</td>
-                    <td>{{ debt.outstanding_balance }}</td> <!-- Use outstanding_balance property -->
-                    <td>{% if debt.is_paid %}Paid{% else %}Unpaid{% endif %}</td>
+                    <td>{{ debt.amount|floatformat:2 }}</td>
+                    <td>{{ debt.amount_paid|default:"0.00"|floatformat:2 }}</td>
+                    <td>{{ debt.outstanding_balance|floatformat:2 }}</td>
+                    <td class="{% if debt.is_paid %}text-success{% else %}text-danger{% endif %}">
+                        {% if debt.is_paid %}Paid{% else %}Unpaid{% endif %}
+                    </td>
                     <td>
                         <a href="{% url 'edit_debt' debt.id %}" class="btn edit-button">Edit</a>
                         <a href="{% url 'delete_debt' debt.id %}" class="btn delete-button" onclick="return confirm('Are you sure you want to delete this debt?');">Delete</a>
@@ -36,17 +41,17 @@
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="7">No debt records available.</td>
+                    <td colspan="7">No debt records available. Click <a href="{% url 'add_debt' %}">Add Debt</a> to get started.</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
 
-        <!-- Display total debts, amount paid, and outstanding balance at the bottom -->
-        <div class="mt-4">
-            <h3>Total Debts: KES {{ total_debts }}</h3>
-            <h3>Total Amount Paid: KES {{ total_amount_paid }}</h3>
-            <h3>Total Outstanding Balance: KES {{ total_outstanding_balance }}</h3>
+        <!-- Totals Section -->
+        <div class="totals-section mt-4">
+            <h3>Total Debts: <strong>KES {{ total_debts|floatformat:2 }}</strong></h3>
+            <h3>Total Amount Paid: <strong>KES {{ total_amount_paid|floatformat:2 }}</strong></h3>
+            <h3>Total Outstanding Balance: <strong>KES {{ total_outstanding_balance|floatformat:2 }}</strong></h3>
         </div>
     </div>
 </div>

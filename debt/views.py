@@ -1,4 +1,5 @@
 from dateutil.relativedelta import relativedelta  # Import relativedelta
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
 from django.shortcuts import get_object_or_404, redirect
@@ -40,9 +41,10 @@ def add_debt(request):
         form = DebtForm(request.POST)
         if form.is_valid():
             debt = form.save(commit=False)
-            debt.user = request.user  # Assign the current user to the debt
+            debt.user = request.user
             debt.save()
-            return redirect('debt_list')  # Redirect to the list of debts
+            messages.success(request, 'Debt added successfully.')
+            return redirect('debt_list')
     else:
         form = DebtForm()
     return render(request, 'debt/debt_form.html', {'form': form})
@@ -63,10 +65,11 @@ def edit_debt(request, pk):
 
 @login_required
 def delete_debt(request, pk):
-    debt = get_object_or_404(Debt, pk=pk, user=request.user)  # Ensure debt belongs to current user
+    debt = get_object_or_404(Debt, pk=pk, user=request.user)
 
     if request.method == 'POST':
         debt.delete()
-        return redirect('debt_list')  # Redirect to the debt list after deletion
+        messages.success(request, 'Debt deleted successfully.')
+        return redirect('debt_list')
 
     return render(request, 'debt/delete_debt.html', {'debt': debt})
